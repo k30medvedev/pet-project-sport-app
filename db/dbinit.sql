@@ -1,0 +1,22 @@
+-- table 1 
+CREATE TABLE IF NOT EXISTS sportsmans(
+id SERIAL PRIMARY KEY,
+first_name TEXT NOT NULL,
+last_name TEXT NOT NULL,
+email TEXT NOT NULL,
+birthday DATE NOT NULL
+);
+
+-- table 2
+CREATE TABLE IF NOT EXISTS runs(
+id SERIAL PRIMARY KEY,
+start_run TIMESTAMP WITH TIME ZONE NOT NULL,
+finish_run TIMESTAMP WITH TIME ZONE NOT NULL,
+distance NUMERIC NOT NULL,
+sportsman_id INTEGER REFERENCES sportsmans (id) NOT NULL
+);
+
+
+
+
+
