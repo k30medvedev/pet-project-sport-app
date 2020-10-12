@@ -1,0 +1,183 @@
+еализовать backend приложение, в котором через REST запросы можно будет делать следующее:
+1. CRUD операции над спортсменами (создание, получение, редактирование, удаление). Аттрибуты: имя, фамилия, емэйл, ДР
+2. CRUD операции над данными о пробежках спортсменов. Аттрибуты: дата-время начала пробежки, дата-время окончания, дистанция, среднее время (высчитывать автоматически)
+
+GET /sportsmens[?sort=age&dir=asc]    - получение список спортсменов
+{
+"sportsmens":
+[{
+ "id":4,
+ "firstName":"ivanod",
+ "lastName":"sidorod",
+ "email":"ivanond@mail.ru",
+ "birthday":"15/03/1988"
+},
+{
+ "id":5,
+ "firstName":"ilya",
+ "lastName":"petrov",
+ "email":"555@mail.ru",
+ "birthday":"12/02/1988"
+}]
+}
+
+
+GET /sportsmens/{id}        - получение данных конкретного спортсмена
+{
+ "id":4,
+ "firstName":"ivanod",
+ "lastName":"sidorod",
+ "email":"ivanond@mail.ru",
+ "birthday":"15/03/1988"
+}
+
+x POST /sportsmens/{id}          - создание спортсмена (неверно)
+POST /sportsmens        - создание спортсмена
+
+{
+ "firstName":"oleg",
+ "lastName":"petrov",
+ "email":"555@mail.ru",
+ "birthday":"12/02/1988"   
+}
+
+{   
+  "id":15,
+  "firstName":"oleg",
+  "lastName":"petrov",
+  "email":"555@mail.ru",
+  "birthday":"12/02/1988"    
+}
+
+
+
+x PUT /updinfosportsmen     - обновление информации о спортсмене (неверно)
+x PUT /sportsmens/{id}/info - обновление информации о спортсмене (неверно)
+PUT /sportsmens/{id}        - обновление информации о спортсмене
+{
+ x "id":15,                   неправильно. 
+ "firstName":"Nikolay",
+ "lastName":"Halezin",
+ "email":"NK@gmail.com",
+ "birthday":"01/02/2000"   
+}
+
+{   
+ "id":15,                    - получение
+ "firstName":"Nikolay",
+ "lastName":"Halezin",
+ "email":"NK@gmail.com",
+ "birthday":"01/02/2000"    
+}
+
+
+DELETE /sportsmens/{id}      - удаление информации о спортсмене
+ 
+
+state:
+200 (ok)
+202 (Accepted)
+204 (No content)
+
+
+GET /runs[?sort=run-over&sort=distance]  - получение данных о всех пробежках
+
+{
+"runs":
+[{
+"id" : 1,
+"startRun":  "2020-10-15T14:00:00",
+"finishRun": "2020-10-15T14:15:00",
+"distance" :  2.45,
+"averageTime" : "20:02"
+},
+{
+"id" : 2,
+"startRun": "2020-10-15T16:00:00",
+"finishRun" :"2020-10-15T16:45:00",
+"distance" : 3.45,
+"averageTime" : "18:02"
+}]
+}
+
+
+GET /runs/{id}                         -получение конкретной пробежки 
+
+{
+"id" : 2,
+"startRun": "2020-11-15T16:00:00",
+"finishRun" :2020-11-15T17:05:00",
+"distance" : "3,40",
+"averageTime" : "18:02"
+}
+
+
+
+POST /runs                            - создание пробежки 
+
+{
+"startRun": "2020-11-15T17:10:00",                   -отправка body
+"finishRun" :2020-11-15T17:50:00",
+"distance" : "3,25",
+x"averageTime" : "15:02"              не верно.
+}
+
+{
+"id": 4,                             -получение body
+"startRun": "2020-09-15T17:10:00",           
+"finishRun" :2020-09-15T17:20:00",
+"distance" : "2,20",
+"averageTime" : "15:02"
+}
+
+
+PUT /runs/{id}                             изменение пробежки 
+
+
+{
+                                   -Отправка body
+"startRun": "2020-09-15T17:10:00",           
+"finishRun" :2020-09-15T17:40:00",
+"distance" : "3,40",
+}
+
+{
+"id": 4,                                   -получение body
+"startRun": "2020-09-15T19:10:00",           
+"finishRun" :2020-09-15T19:40:00",
+"distance" : "3,40",
+"averageTime" : "17:02"
+}
+
+state:
+200 (ok)
+202 (Accepted) принято,но ждёт удаление
+204 (No content)
+
+DELETE /runs/{id}                          удаление пробежки 
+
+
+
+
+
+GET /sportsmens/{id}/runs                  получение пробежек конкретного спортмсмена. 
+
+
+{
+"runs":
+[ 
+{ "id": 17,                              -id пробежки
+"startRun": "2020-09-15T17:12:00",
+"finishRun" :2020-09-15T17:12:42",
+"distance" : "3,45",
+"averageTime" : "18:02"
+},         
+{ "id": 21,                              -id пробежки
+ "startRun": "2020-09-15T20:10:00",
+"finishRun" :2020-09-15T20:15:00",
+"distance" : "4,20",
+"averageTime" : "17:02"
+}
+]
+}
+
