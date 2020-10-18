@@ -5,7 +5,7 @@ import by.kirill.sportsman.app.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SportsmanLisDto {
+public class SportsmanListDto {
 
     List<User> sportsmens = new ArrayList<>();
 
@@ -17,7 +17,6 @@ public class SportsmanLisDto {
     public void setSportsmens(List<User> sportsmens) {
         this.sportsmens = sportsmens;
     }
-
 
 
 }

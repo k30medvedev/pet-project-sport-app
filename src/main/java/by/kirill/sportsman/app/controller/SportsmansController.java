@@ -1,10 +1,9 @@
 package by.kirill.sportsman.app.controller;
 
+import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.model.User;
+import by.kirill.sportsman.app.service.RunService;
 import by.kirill.sportsman.app.service.UserService;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +25,8 @@ class SportsmansController {
 
     @GetMapping("/sportsmans")
     @ResponseBody
-    SportsmanLisDto getall() {
-        SportsmanLisDto sportsmanLisDto = new SportsmanLisDto();
+    SportsmanListDto getall() {
+        SportsmanListDto sportsmanLisDto = new SportsmanListDto();
         List<User> users = userService.findAll();
         sportsmanLisDto.setSportsmens(users);
         return sportsmanLisDto;
@@ -41,15 +40,18 @@ class SportsmansController {
         user.setLastName(userCreationDto.getLastName());
         user.setBirthday(userCreationDto.getBirthday());
         user.setEmail(userCreationDto.getEmail());
-        userService.saveUser(user);
+        user = userService.saveUser(user);
         return user;
     }
 
+
+    @ResponseBody
     @DeleteMapping("/sportsmans/{id}")
-    String deleteUser(@PathVariable Long id) {
+    Long deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
-        return "id:" + id + " was deleted successfully" + HttpStatus.OK;
+        return id;
     }
+
 
     @PutMapping("/sportsmans/{id}")
     User updateUser(@RequestBody User user) {

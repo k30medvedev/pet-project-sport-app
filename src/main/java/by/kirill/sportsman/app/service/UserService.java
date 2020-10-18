@@ -5,6 +5,7 @@ import by.kirill.sportsman.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -24,10 +25,13 @@ public class UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+    @Transactional
+    public void deleteById(Long id) { userRepository.deleteByIdCascade(id); }
 
-    public void deleteById(Long id) { userRepository.deleteById(id); }
+    public boolean ifExist(Long id) {
+        return userRepository.existsById(id);
+    }
 
-    public boolean ifExist(Long id){return userRepository.existsById(id);}
 
-   // public User updateUser(User user){return userRepository.}
+
 }
