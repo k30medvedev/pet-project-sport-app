@@ -2,15 +2,18 @@ package by.kirill.sportsman.app.controller;
 
 import by.kirill.sportsman.app.model.User;
 import by.kirill.sportsman.app.service.UserService;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-class HelloController {
+class SportsmansController {
     private final UserService userService;
 
-    public HelloController(UserService userService) {
+    public SportsmansController(UserService userService) {
         this.userService = userService;
     }
 
@@ -42,34 +45,20 @@ class HelloController {
         return user;
     }
 
+    @DeleteMapping("/sportsmans/{id}")
+    String deleteUser(@PathVariable Long id) {
+        userService.deleteById(id);
+        return "id:" + id + " was deleted successfully" + HttpStatus.OK;
+    }
 
-//    @GetMapping("/sportsmens/{id}")
-//    public ResponseEntity<String> findById(@PathVariable String id) {
-//        return new ResponseEntity<String>("GET Response", HttpStatus.OK);
-//    }
-//
-//    @PutMapping("/sportsmens/{id}")
-//    public @ResponseBody
-//    ResponseEntity<String> put(@PathVariable String id) {
-//        return new ResponseEntity<String>("PUT Response", HttpStatus.OK);
-//
-//    }
+    @PutMapping("/sportsmans/{id}")
+    User updateUser(@RequestBody User user) {
+        userService.saveUser(user);
+        return user;
+    }
 
-    //    @DeleteMapping("/sportsmens/{id}") {
-//        public @ResponseBody ResponseEntity<String> deleteById(){
-//            return new ResponseEntity<String>("DELETE Response", HttpStatus.OK);
-//        }
-//
-//    ;
-//
-
-
-//
-//    @PutMapping("/sportsmens/{id}") {
-//        public String
-//        return "user "
-//
-//    }
-//
 
 }
+
+
+

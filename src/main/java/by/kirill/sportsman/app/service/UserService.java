@@ -27,5 +27,7 @@ public class UserService {
 
     public void deleteById(Long id) { userRepository.deleteById(id); }
 
+    public boolean ifExist(Long id){return userRepository.existsById(id);}
 
+   // public User updateUser(User user){return userRepository.}
 }
