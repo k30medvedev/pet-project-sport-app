@@ -5,10 +5,9 @@ import by.kirill.sportsman.app.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SportsmanListDto {
+public class UserListDto {
 
     List<User> sportsmens = new ArrayList<>();
-
 
     public List<User> getSportsmens() {
         return sportsmens;

@@ -1,12 +1,7 @@
 package by.kirill.sportsman.app.controller;
 
 import by.kirill.sportsman.app.model.Run;
-import by.kirill.sportsman.app.model.User;
-import by.kirill.sportsman.app.repository.RunRepository;
 import by.kirill.sportsman.app.service.RunService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,21 +38,36 @@ public class RunController {
     }
 
 
-//    @PutMapping("/runs/{id}")
-//    Run updateRun(@RequestBody Run run) {
-//        runService.saveRun(run);
-//        return run;
-//
-//    }
+    @PutMapping("/runs/{id}")
+    RunUserDto updateRun(@PathVariable Long id, @RequestBody RunUpdateDto runUpdateDto) {
+        Run run = runService.findById(id);
+        run.setStartRun(runUpdateDto.getStartRun());
+        run.setFinishRun(runUpdateDto.getFinishRun());
+        run.setDistance(runUpdateDto.getDistance());
+        run.setSportsmanId(runUpdateDto.getSportsmanId());
+        run = runService.saveRun(run);
+        RunUserDto runUserDto = new RunUserDto();
+        runUserDto.setId(run.getId());
+        runUserDto.setStartRun(run.getStartRun());
+        runUserDto.setFinishRun(run.getFinishRun());
+        runUserDto.setDistance(run.getDistance());
+        runUserDto.setSportsmanId(run.getSportsmanId());
+        runUserDto.setAverage(run.getAverage());
+        runService.saveRun(run);
+        return runUserDto;
+
+    }
 
     @PostMapping("/runs")
     RunUserDto createRun(@RequestBody RunCreationDto dto) {
+
         Run run = new Run();
         run.setStartRun(dto.getStartRun());
         run.setFinishRun(dto.getFinishRun());
         run.setDistance(dto.getDistance());
         run.setSportsmanId(dto.getSportsmanId());
         run = runService.saveRun(run);
+
         RunUserDto runUserDto = new RunUserDto();
         runUserDto.setId(run.getId());
         runUserDto.setStartRun(run.getStartRun());

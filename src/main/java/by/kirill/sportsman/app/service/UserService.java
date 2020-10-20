@@ -14,9 +14,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findById(Long id) {
-        return userRepository.getOne(id);
-    }
+    public User findById(Long id) { return userRepository.getOne(id); }
 
     public List<User> findAll() {
         return userRepository.findAll();

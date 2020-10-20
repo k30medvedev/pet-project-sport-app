@@ -2,17 +2,18 @@ package by.kirill.sportsman.app.controller;
 
 import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.model.User;
-import by.kirill.sportsman.app.service.RunService;
 import by.kirill.sportsman.app.service.UserService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
-class SportsmansController {
+class UserController {
     private final UserService userService;
 
-    public SportsmansController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -25,12 +26,26 @@ class SportsmansController {
 
     @GetMapping("/sportsmans")
     @ResponseBody
-    SportsmanListDto getall() {
-        SportsmanListDto sportsmanLisDto = new SportsmanListDto();
+    UserListDto getall() {
+        UserListDto sportsmanLisDto = new UserListDto();
         List<User> users = userService.findAll();
         sportsmanLisDto.setSportsmens(users);
         return sportsmanLisDto;
-        // return users;
+
+    }
+
+    @GetMapping("/sportsmans/{id}")
+    @ResponseBody
+    UserDto findUser(@PathVariable Long id) {
+        User user = userService.findById(id);
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setBirthday(user.getBirthday());
+        return dto;
+
     }
 
     @PostMapping("/sportsmans")
@@ -54,11 +69,24 @@ class SportsmansController {
 
 
     @PutMapping("/sportsmans/{id}")
-    User updateUser(@RequestBody User user) {
-        userService.saveUser(user);
-        return user;
-    }
+    UserDto updateUserbyId(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
+        User user = userService.findById(id);
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setBirthday(dto.getBirthday());
+        user = userService.saveUser(user);
 
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setBirthday(user.getBirthday());
+        userService.saveUser(user);
+        return userDto;
+
+    }
 
 }
 

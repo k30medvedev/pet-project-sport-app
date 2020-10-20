@@ -1,10 +1,8 @@
 package by.kirill.sportsman.app.service;
 
 import by.kirill.sportsman.app.model.Run;
-import by.kirill.sportsman.app.model.User;
 import by.kirill.sportsman.app.repository.RunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +31,12 @@ public class RunService {
 
     public boolean ifExist(Long id) {
         return runRepository.existsById(id);
+    }
+
+
+    public Run updateRun(Long id, Run run) {
+        run.setId(id);
+        return runRepository.save(run);
     }
 
 
