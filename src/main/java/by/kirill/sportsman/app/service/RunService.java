@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 public class RunService {
 
-    @Autowired
-    private RunRepository runRepository;
+    private final RunRepository runRepository;
+
+    public RunService(RunRepository runRepository) {
+        this.runRepository = runRepository;
+    }
 
     public Run findById(Long id) {
         return runRepository.getOne(id);
@@ -33,11 +36,6 @@ public class RunService {
         return runRepository.existsById(id);
     }
 
-
-    public Run updateRun(Long id, Run run) {
-        run.setId(id);
-        return runRepository.save(run);
-    }
 
 
 }

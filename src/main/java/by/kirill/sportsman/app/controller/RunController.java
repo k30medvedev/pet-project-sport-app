@@ -7,17 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class RunController {
+class RunController {
 
     private final RunService runService;
 
-    public RunController(RunService runService) {
+    RunController(RunService runService) {
         this.runService = runService;
-    }
-
-    @RequestMapping("/run")
-    String index() {
-        return "Runs";
     }
 
     @GetMapping("/runs")
@@ -27,13 +22,6 @@ public class RunController {
         List<Run> runs = runService.findAllRuns();
         runsListDto.setRuns(runs);
         return runsListDto;
-    }
-
-    @ResponseBody
-    @DeleteMapping("/runs/{id}")
-    Long deleteRun(@PathVariable Long id) {
-        runService.deleteById(id);
-        return id;
     }
 
 
@@ -52,7 +40,6 @@ public class RunController {
         runUserDto.setDistance(run.getDistance());
         runUserDto.setSportsmanId(run.getSportsmanId());
         runUserDto.setAverage(run.getAverage());
-        runService.saveRun(run);
         return runUserDto;
 
     }
@@ -75,5 +62,14 @@ public class RunController {
         runUserDto.setAverage(run.getAverage());
         return runUserDto;
     }
+
+
+    @ResponseBody
+    @DeleteMapping("/runs/{id}")
+    Long deleteRun(@PathVariable Long id) {
+        runService.deleteById(id);
+        return id;
+    }
+// Вернуть JSON  с ID либо void ResponseStatus (HTTP 204 No content)
 
 }

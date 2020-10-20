@@ -4,7 +4,9 @@ import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.model.User;
 import by.kirill.sportsman.app.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,13 +19,6 @@ class UserController {
         this.userService = userService;
     }
 
-
-    @RequestMapping("/")
-    String index() {
-        return "Greetings from Spring Boot!";
-    }
-
-
     @GetMapping("/sportsmans")
     @ResponseBody
     UserListDto getall() {
@@ -31,7 +26,7 @@ class UserController {
         List<User> users = userService.findAll();
         sportsmanLisDto.setSportsmens(users);
         return sportsmanLisDto;
-
+// переделать
     }
 
     @GetMapping("/sportsmans/{id}")
@@ -66,16 +61,17 @@ class UserController {
     }
 
 
-    @ResponseBody
+
     @DeleteMapping("/sportsmans/{id}")
     Long deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return id;
     }
-
+    // переделать.
 
     @PutMapping("/sportsmans/{id}")
     UserDto updateUserbyId(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
+
         User user = userService.findById(id);
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
@@ -88,11 +84,9 @@ class UserController {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setBirthday(user.getBirthday());
-        userService.saveUser(user);
         return userDto;
-
     }
-
+  // отдельный класс для конв.
 }
 
 
