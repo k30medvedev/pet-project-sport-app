@@ -49,14 +49,20 @@ class UserController {
     }
 
     @PostMapping("/sportsmans")
-    User createUser(@RequestBody UserCreationDto userCreationDto) {
+    UserDto createUser(@RequestBody UserCreationDto userCreationDto) {
         User user = new User();
         user.setFirstName(userCreationDto.getFirstName());
         user.setLastName(userCreationDto.getLastName());
-        user.setBirthday(userCreationDto.getBirthday());
         user.setEmail(userCreationDto.getEmail());
+        user.setBirthday(userCreationDto.getBirthday());
         user = userService.saveUser(user);
-        return user;
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setBirthday(user.getBirthday());
+        userDto.setEmail(user.getEmail());
+        return userDto;
     }
 
 
@@ -76,7 +82,6 @@ class UserController {
         user.setEmail(dto.getEmail());
         user.setBirthday(dto.getBirthday());
         user = userService.saveUser(user);
-
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());

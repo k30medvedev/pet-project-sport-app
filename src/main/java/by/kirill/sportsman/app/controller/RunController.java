@@ -15,7 +15,6 @@ public class RunController {
         this.runService = runService;
     }
 
-
     @RequestMapping("/run")
     String index() {
         return "Runs";
@@ -67,7 +66,6 @@ public class RunController {
         run.setDistance(dto.getDistance());
         run.setSportsmanId(dto.getSportsmanId());
         run = runService.saveRun(run);
-
         RunUserDto runUserDto = new RunUserDto();
         runUserDto.setId(run.getId());
         runUserDto.setStartRun(run.getStartRun());
