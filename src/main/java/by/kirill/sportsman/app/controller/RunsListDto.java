@@ -1,17 +1,17 @@
 package by.kirill.sportsman.app.controller;
 
-import by.kirill.sportsman.app.model.Run;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class RunsListDto {
 
-    List<Run> runs = new ArrayList<>();
-    public List<Run> getRuns() {
+    List<RunUserDto> runs = new ArrayList<>();
+
+    public List<RunUserDto> getRuns() {
         return runs;
     }
-    public void setRuns(List<Run> runs) {
+
+    public void setRuns(List<RunUserDto> runs) {
         this.runs = runs;
     }
 }

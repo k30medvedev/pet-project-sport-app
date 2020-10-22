@@ -4,6 +4,7 @@ import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.service.RunService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,14 +16,39 @@ class RunController {
         this.runService = runService;
     }
 
+//    @GetMapping("/runs")
+//    @ResponseBody
+//    RunsListDto getAllRuns() {
+//        RunsListDto runsListDto = new RunsListDto();
+//        List<Run> runs = runService.findAllRuns();
+//        runsListDto.setRuns(runs);
+//        return runsListDto;
+//    }
+
     @GetMapping("/runs")
     @ResponseBody
-    RunsListDto getAllRuns() {
+
+    RunsListDto getAllRuns(){
+        List<RunUserDto> dtoList = new ArrayList<RunUserDto>();
+        List<Run> runList = runService.findAllRuns();
         RunsListDto runsListDto = new RunsListDto();
-        List<Run> runs = runService.findAllRuns();
-        runsListDto.setRuns(runs);
+//        dtoList = runList.stream().map(dtoList-> mvcConversionService.convert )
+
         return runsListDto;
+
+
     }
+
+
+//    RunsListDto getAllRuns(@RequestBody RunUserDto runUserDto) {
+//        RunsListDto runsListDto = new RunsListDto();
+//
+//        ModelMapper modelMapper = new ModelMapper();
+//        modelMapper.map(runList,runsListDto);
+//        TypeMap<Run, RunUserDto> typeMap = modelMapper.typeMap(Run.class,RunUserDto.class).addMapping(Run::getId,RunUserDto::setId);
+//
+
+
 
 
     @PutMapping("/runs/{id}")
@@ -66,10 +92,12 @@ class RunController {
 
     @ResponseBody
     @DeleteMapping("/runs/{id}")
-    Long deleteRun(@PathVariable Long id) {
+    RunDeleteDto deleteRun(@PathVariable Long id) {
+        RunDeleteDto dto = new RunDeleteDto();
+        Run run = runService.findById(id);
+        dto.setId(run.getId());
         runService.deleteById(id);
-        return id;
+        return dto;
     }
-// Вернуть JSON  с ID либо void ResponseStatus (HTTP 204 No content)
 
 }

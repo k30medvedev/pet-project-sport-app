@@ -61,13 +61,15 @@ class UserController {
     }
 
 
-
     @DeleteMapping("/sportsmans/{id}")
-    Long deleteUser(@PathVariable("id") Long id) {
+    UserDeleteDto deleteUser(@PathVariable("id") Long id) {
+        UserDeleteDto dto = new UserDeleteDto();
         userService.deleteById(id);
-        return id;
+        User user = userService.findById(id);
+        dto.setId(user.getId());
+        return dto;
     }
-    // переделать.
+
 
     @PutMapping("/sportsmans/{id}")
     UserDto updateUserbyId(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
