@@ -2,8 +2,11 @@ package by.kirill.sportsman.app.controller;
 
 import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.service.RunService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,79 +19,37 @@ class RunController {
         this.runService = runService;
     }
 
-//    @GetMapping("/runs")
-//    @ResponseBody
-//    RunsListDto getAllRuns() {
-//        RunsListDto runsListDto = new RunsListDto();
-//        List<Run> runs = runService.findAllRuns();
-//        runsListDto.setRuns(runs);
-//        return runsListDto;
-//    }
-
     @GetMapping("/runs")
     @ResponseBody
-
-    RunsListDto getAllRuns(){
-        List<RunUserDto> dtoList = new ArrayList<RunUserDto>();
-        List<Run> runList = runService.findAllRuns();
+    RunsListDto getAllRuns() {
         RunsListDto runsListDto = new RunsListDto();
-//        dtoList = runList.stream().map(dtoList-> mvcConversionService.convert )
-
+        List<Run> runList = runService.findAllRuns();
+        Type listType = new TypeToken<List<RunUserDto>>() {
+        }.getType();
+        List<RunUserDto> dtoList = new ModelMapper().map(runList, listType);
+        runsListDto.setRuns(dtoList);
         return runsListDto;
-
-
-    }
-
-
-//    RunsListDto getAllRuns(@RequestBody RunUserDto runUserDto) {
-//        RunsListDto runsListDto = new RunsListDto();
-//
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.map(runList,runsListDto);
-//        TypeMap<Run, RunUserDto> typeMap = modelMapper.typeMap(Run.class,RunUserDto.class).addMapping(Run::getId,RunUserDto::setId);
-//
-
-
-
-
-    @PutMapping("/runs/{id}")
-    RunUserDto updateRun(@PathVariable Long id, @RequestBody RunUpdateDto runUpdateDto) {
-        Run run = runService.findById(id);
-        run.setStartRun(runUpdateDto.getStartRun());
-        run.setFinishRun(runUpdateDto.getFinishRun());
-        run.setDistance(runUpdateDto.getDistance());
-        run.setSportsmanId(runUpdateDto.getSportsmanId());
-        run = runService.saveRun(run);
-        RunUserDto runUserDto = new RunUserDto();
-        runUserDto.setId(run.getId());
-        runUserDto.setStartRun(run.getStartRun());
-        runUserDto.setFinishRun(run.getFinishRun());
-        runUserDto.setDistance(run.getDistance());
-        runUserDto.setSportsmanId(run.getSportsmanId());
-        runUserDto.setAverage(run.getAverage());
-        return runUserDto;
-
     }
 
     @PostMapping("/runs")
     RunUserDto createRun(@RequestBody RunCreationDto dto) {
-
         Run run = new Run();
-        run.setStartRun(dto.getStartRun());
-        run.setFinishRun(dto.getFinishRun());
-        run.setDistance(dto.getDistance());
-        run.setSportsmanId(dto.getSportsmanId());
+        ConvertRunToDto(dto, run);
         run = runService.saveRun(run);
         RunUserDto runUserDto = new RunUserDto();
-        runUserDto.setId(run.getId());
-        runUserDto.setStartRun(run.getStartRun());
-        runUserDto.setFinishRun(run.getFinishRun());
-        runUserDto.setDistance(run.getDistance());
-        runUserDto.setSportsmanId(run.getSportsmanId());
-        runUserDto.setAverage(run.getAverage());
+        ConvertUserDtoToRun(run, runUserDto);
         return runUserDto;
     }
 
+    @PutMapping("/runs/{id}")
+    RunUserDto updateRun(@PathVariable Long id, @RequestBody RunCreationDto dto) {
+        Run run = runService.findById(id);
+        ConvertRunToDto(dto, run);
+        run = runService.saveRun(run);
+        RunUserDto runUserDto = new RunUserDto();
+        ConvertUserDtoToRun(run, runUserDto);
+        return runUserDto;
+    }
 
     @ResponseBody
     @DeleteMapping("/runs/{id}")
@@ -99,5 +60,21 @@ class RunController {
         runService.deleteById(id);
         return dto;
     }
+
+    private void ConvertRunToDto(@RequestBody RunCreationDto dto, Run run) {
+        run.setStartRun(dto.getStartRun());
+        run.setFinishRun(dto.getFinishRun());
+        run.setDistance(dto.getDistance());
+        run.setSportsmanId(dto.getSportsmanId());
+    }
+    private void ConvertUserDtoToRun(Run run, RunUserDto runUserDto) {
+        runUserDto.setId(run.getId());
+        runUserDto.setStartRun(run.getStartRun());
+        runUserDto.setFinishRun(run.getFinishRun());
+        runUserDto.setDistance(run.getDistance());
+        runUserDto.setSportsmanId(run.getSportsmanId());
+        runUserDto.setAverage(run.getAverage());
+    }
+
 
 }

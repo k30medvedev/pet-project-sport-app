@@ -40,4 +40,6 @@ public class RunCreationDto {
     public void setSportsmanId(Long sportsmanId) {
         this.sportsmanId = sportsmanId;
     }
+
+
 }

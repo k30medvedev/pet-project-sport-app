@@ -1,12 +1,8 @@
 package by.kirill.sportsman.app.controller;
 
-import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.model.User;
 import by.kirill.sportsman.app.service.UserService;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,32 +30,20 @@ class UserController {
     UserDto findUser(@PathVariable Long id) {
         User user = userService.findById(id);
         UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
-        dto.setEmail(user.getEmail());
-        dto.setBirthday(user.getBirthday());
+        ConvertUserDtoToUser(user, dto);
         return dto;
 
     }
 
     @PostMapping("/sportsmans")
-    UserDto createUser(@RequestBody UserCreationDto userCreationDto) {
+    UserDto createUser(@RequestBody UserCreationDto dto) {
         User user = new User();
-        user.setFirstName(userCreationDto.getFirstName());
-        user.setLastName(userCreationDto.getLastName());
-        user.setEmail(userCreationDto.getEmail());
-        user.setBirthday(userCreationDto.getBirthday());
+        ConvertUserToUserDto(dto, user);
         user = userService.saveUser(user);
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setBirthday(user.getBirthday());
-        userDto.setEmail(user.getEmail());
+        ConvertUserDtoToUser(user, userDto);
         return userDto;
     }
-
 
     @DeleteMapping("/sportsmans/{id}")
     UserDeleteDto deleteUser(@PathVariable("id") Long id) {
@@ -70,25 +54,28 @@ class UserController {
         return dto;
     }
 
-
     @PutMapping("/sportsmans/{id}")
-    UserDto updateUserbyId(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
-
+    UserDto updateUserById(@PathVariable Long id, @RequestBody UserCreationDto dto) {
         User user = userService.findById(id);
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setEmail(dto.getEmail());
-        user.setBirthday(dto.getBirthday());
-        user = userService.saveUser(user);
         UserDto userDto = new UserDto();
+        ConvertUserDtoToUser(user, userDto);
+        user = userService.saveUser(user);
+        ConvertUserDtoToUser(user, userDto);
+        return userDto;
+    }
+    private void ConvertUserDtoToUser(User user, UserDto userDto) {
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setBirthday(user.getBirthday());
-        return userDto;
     }
-  // отдельный класс для конв.
+    private void ConvertUserToUserDto(@RequestBody UserCreationDto dto, User user) {
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setBirthday(dto.getBirthday());
+    }
 }
 
 
