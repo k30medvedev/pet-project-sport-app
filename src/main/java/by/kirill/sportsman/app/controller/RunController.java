@@ -67,6 +67,7 @@ class RunController {
         run.setDistance(dto.getDistance());
         run.setSportsmanId(dto.getSportsmanId());
     }
+
     private void ConvertUserDtoToRun(Run run, RunUserDto runUserDto) {
         runUserDto.setId(run.getId());
         runUserDto.setStartRun(run.getStartRun());

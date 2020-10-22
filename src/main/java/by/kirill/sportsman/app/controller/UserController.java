@@ -1,9 +1,13 @@
 package by.kirill.sportsman.app.controller;
 
+import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.model.User;
 import by.kirill.sportsman.app.service.UserService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 
@@ -18,11 +22,14 @@ class UserController {
     @GetMapping("/sportsmans")
     @ResponseBody
     UserListDto getall() {
-        UserListDto sportsmanLisDto = new UserListDto();
-        List<User> users = userService.findAll();
-        sportsmanLisDto.setSportsmens(users);
-        return sportsmanLisDto;
-// переделать
+        UserListDto userDto = new UserListDto();
+        List<User> listUsers = userService.findAll();
+        Type listType = new TypeToken<List<UserDto>>() {
+        }.getType();
+        List<UserDto> listUsersDto = new ModelMapper().map(listUsers, listType);
+        userDto.setSportsmans(listUsersDto);
+        return userDto;
+
     }
 
     @GetMapping("/sportsmans/{id}")
@@ -63,6 +70,7 @@ class UserController {
         ConvertUserDtoToUser(user, userDto);
         return userDto;
     }
+
     private void ConvertUserDtoToUser(User user, UserDto userDto) {
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
@@ -70,6 +78,7 @@ class UserController {
         userDto.setEmail(user.getEmail());
         userDto.setBirthday(user.getBirthday());
     }
+
     private void ConvertUserToUserDto(@RequestBody UserCreationDto dto, User user) {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());

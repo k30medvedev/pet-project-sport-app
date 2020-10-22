@@ -8,7 +8,6 @@ public class UserCreationDto {
     private String email;
     private LocalDate birthday;
 
-
     public String getFirstName() {
         return firstName;
     }

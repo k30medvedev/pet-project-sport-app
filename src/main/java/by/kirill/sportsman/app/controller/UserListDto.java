@@ -7,15 +7,13 @@ import java.util.List;
 
 public class UserListDto {
 
-    List<User> sportsmens = new ArrayList<>();
+    List<UserDto> sportsmans = new ArrayList<>();
 
-    public List<User> getSportsmens() {
-        return sportsmens;
+    public List<UserDto> getSportsmans() {
+        return sportsmans;
     }
 
-    public void setSportsmens(List<User> sportsmens) {
-        this.sportsmens = sportsmens;
+    public void setSportsmans(List<UserDto> sportsmans) {
+        this.sportsmans = sportsmans;
     }
-
-
 }

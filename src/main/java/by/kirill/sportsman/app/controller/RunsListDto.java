@@ -7,11 +7,7 @@ public class RunsListDto {
 
     List<RunUserDto> runs = new ArrayList<>();
 
-    public List<RunUserDto> getRuns() {
-        return runs;
-    }
+    public List<RunUserDto> getRuns() {return runs;}
 
-    public void setRuns(List<RunUserDto> runs) {
-        this.runs = runs;
-    }
+    public void setRuns(List<RunUserDto> runs) {this.runs = runs;}
 }
