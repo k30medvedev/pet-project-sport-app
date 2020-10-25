@@ -36,6 +36,7 @@ class RunController {
         Run run = new Run();
         ConvertRunToDto(dto, run);
         run = runService.saveRun(run);
+
         RunUserDto runUserDto = new RunUserDto();
         ConvertUserDtoToRun(run, runUserDto);
         return runUserDto;
@@ -66,6 +67,7 @@ class RunController {
         run.setFinishRun(dto.getFinishRun());
         run.setDistance(dto.getDistance());
         run.setSportsmanId(dto.getSportsmanId());
+        run.setAverage(run.getAverage());
     }
 
     private void ConvertUserDtoToRun(Run run, RunUserDto runUserDto) {
@@ -76,6 +78,5 @@ class RunController {
         runUserDto.setSportsmanId(run.getSportsmanId());
         runUserDto.setAverage(run.getAverage());
     }
-
 
 }

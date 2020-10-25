@@ -5,8 +5,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include relativeToChangelogFile="true" file="db.changelog-0001-init.xml"/>
-    <include relativeToChangelogFile="true" file="db.changelog-0002-average.xml"/>
+    <changeSet id="0002-01-sportsman" author="kirill.medvedev">
+        <sql>
 
+            ALTER TABLE runs
+            ADD average NUMERIC;
+
+        </sql>
+        <rollback>
+            <sql>
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
-

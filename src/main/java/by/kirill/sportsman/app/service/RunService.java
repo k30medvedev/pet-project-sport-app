@@ -2,17 +2,20 @@ package by.kirill.sportsman.app.service;
 
 import by.kirill.sportsman.app.model.Run;
 import by.kirill.sportsman.app.repository.RunRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @Service
 public class RunService {
+
 
     private final RunRepository runRepository;
 
     public RunService(RunRepository runRepository) {
+
         this.runRepository = runRepository;
     }
 
@@ -24,7 +27,7 @@ public class RunService {
         return runRepository.findAll();
     }
 
-    public Run saveRun(Run run) {
+    public Run saveRun(@Valid Run run) {
         return runRepository.save(run);
     }
 
@@ -35,7 +38,6 @@ public class RunService {
     public boolean ifExist(Long id) {
         return runRepository.existsById(id);
     }
-
 
 
 }

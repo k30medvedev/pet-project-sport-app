@@ -8,6 +8,15 @@ public class RunCreationDto {
     private OffsetDateTime finishRun;
     private Double distance;
     private Long sportsmanId;
+    private Double average;
+
+    public Double getAverage() {
+        return average;
+    }
+
+    public void setAverage(Double average) {
+        this.average = average;
+    }
 
     public OffsetDateTime getStartRun() {
         return startRun;

@@ -1,9 +1,13 @@
 package by.kirill.sportsman.app.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -25,11 +29,14 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Email
     @NotNull
     @Size(min=2, max=30)
     @Column(name = "email")
     private String email;
 
+    @JsonFormat(pattern = "yyyy.MM.dd")
+    @Past
     @NotNull
     @Column(name = "birthday")
     private LocalDate birthday;

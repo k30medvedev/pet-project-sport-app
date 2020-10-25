@@ -9,7 +9,7 @@ public class RunUserDto {
     private OffsetDateTime startRun;
     private OffsetDateTime finishRun;
     private Double distance;
-    private Double average ; // for example
+    private Double average ;
     private Long sportsmanId;
 
 
