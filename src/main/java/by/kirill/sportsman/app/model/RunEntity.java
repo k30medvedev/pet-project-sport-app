@@ -11,7 +11,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "runs")
-public class Run {
+public class RunEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,16 +32,19 @@ public class Run {
     @Column(name = "sportsman_id")
     private Long sportsmanId;
 
-    @Positive
     @Column(name = "average")
     private Double average;
 
-
-    public double getAverage() {
+    public Double calculateAverage() {
         long dif = finishRun.toEpochSecond() - startRun.toEpochSecond();
-        double average = dif / distance;
+        Double average = dif / distance;
         return average;
     }
+
+    public Double getAverage() {
+        return average;
+    }
+
 
     public void setAverage(Double average) {
         this.average = average;

@@ -5,10 +5,14 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="0002-01-add-numeric" author="kirill.medvedev">
+    <changeSet id="0003-01-add-numeric" author="kirill.medvedev">
         <sql>
-            ALTER TABLE runs
-            ADD average NUMERIC;
+            SELECT average,
+            CASE WHEN average =null
+            THEN
+            END
+            FROM runs;
+
         </sql>
         <rollback>
             <sql>

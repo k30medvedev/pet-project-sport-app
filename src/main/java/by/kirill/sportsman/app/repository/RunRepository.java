@@ -1,9 +1,9 @@
 package by.kirill.sportsman.app.repository;
 
-import by.kirill.sportsman.app.model.Run;
+import by.kirill.sportsman.app.model.RunEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RunRepository extends JpaRepository<Run, Long> {
+public interface RunRepository extends JpaRepository<RunEntity, Long> {
 
 
 }

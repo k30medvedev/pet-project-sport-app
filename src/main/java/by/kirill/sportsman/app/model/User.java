@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})  // проверить показать.
 @Table(name = "sportsmans")
 public class User {
     @Id
@@ -31,11 +31,9 @@ public class User {
 
     @Email
     @NotNull
-    @Size(min=2, max=30)
     @Column(name = "email")
     private String email;
 
-    @JsonFormat(pattern = "yyyy.MM.dd")
     @Past
     @NotNull
     @Column(name = "birthday")

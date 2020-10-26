@@ -14,7 +14,15 @@
             email TEXT NOT NULL,
             birthday DATE NOT NULL
             );
+        </sql>
+        <rollback>// почитать.
+            <sql>
+            </sql>
+        </rollback>
+    </changeSet>
 
+    <changeSet id="0001-02-sportsman" author="kirill.medvedev">
+        <sql>
             CREATE TABLE IF NOT EXISTS runs(
             id SERIAL PRIMARY KEY,
             start_run TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -23,7 +31,7 @@
             sportsman_id INTEGER NOT NULL REFERENCES sportsmans (id) ON DELETE CASCADE
             );
         </sql>
-        <rollback>
+        <rollback>// почитать.
             <sql>
             </sql>
         </rollback>
