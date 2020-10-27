@@ -5,17 +5,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="0003-01-add-numeric" author="kirill.medvedev">
+    <changeSet id="0004-01-add-null" author="kirill.medvedev">
         <sql>
-            SELECT average,
-            CASE WHEN average = null
-            THEN
-            END
-            FROM runs;
-
+            ALTER TABLE runs ALTER COLUMN average SET NOT NULL;
         </sql>
         <rollback>
-            <sql>
+             <sql>
             </sql>
         </rollback>
     </changeSet>

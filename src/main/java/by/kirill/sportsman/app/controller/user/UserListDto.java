@@ -1,6 +1,4 @@
-package by.kirill.sportsman.app.controller;
-
-import by.kirill.sportsman.app.model.User;
+package by.kirill.sportsman.app.controller.user;
 
 import java.util.ArrayList;
 import java.util.List;

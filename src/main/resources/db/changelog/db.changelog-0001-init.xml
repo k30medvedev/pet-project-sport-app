@@ -5,7 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="0001-01-sportsman" author="kirill.medvedev">
+    <changeSet id="0001-01-sportsmans" author="kirill.medvedev">
         <sql>
             CREATE TABLE IF NOT EXISTS sportsmans(
             id SERIAL PRIMARY KEY,
@@ -15,13 +15,15 @@
             birthday DATE NOT NULL
             );
         </sql>
-        <rollback>// почитать.
+        <rollback>
             <sql>
+                DROP TABLE [IF EXISTS] sportsmans
+                [CASCADE | RESTRICT];
             </sql>
         </rollback>
     </changeSet>
 
-    <changeSet id="0001-02-sportsman" author="kirill.medvedev">
+    <changeSet id="0001-02-runs" author="kirill.medvedev">
         <sql>
             CREATE TABLE IF NOT EXISTS runs(
             id SERIAL PRIMARY KEY,
@@ -31,8 +33,10 @@
             sportsman_id INTEGER NOT NULL REFERENCES sportsmans (id) ON DELETE CASCADE
             );
         </sql>
-        <rollback>// почитать.
+        <rollback>
             <sql>
+                DROP TABLE [IF EXISTS] runs
+                [CASCADE | RESTRICT];
             </sql>
         </rollback>
     </changeSet>

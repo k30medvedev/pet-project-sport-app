@@ -1,14 +1,30 @@
-package by.kirill.sportsman.app.controller;
+package by.kirill.sportsman.app.controller.run;
 
 import java.time.OffsetDateTime;
 
-public class RunCreationDto {
-
+public class RunUpdateDto {
+    private Long id;
     private OffsetDateTime startRun;
     private OffsetDateTime finishRun;
     private Double distance;
-    private Long sportsmanId;
     private Double average;
+    private Long sportsmanId;
+
+    public Long getSportsmanId() {
+        return sportsmanId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setSportsmanId(Long sportsmanId) {
+        this.sportsmanId = sportsmanId;
+    }
 
     public Double getAverage() {
         return average;
@@ -41,14 +57,4 @@ public class RunCreationDto {
     public void setDistance(Double distance) {
         this.distance = distance;
     }
-
-    public Long getSportsmanId() {
-        return sportsmanId;
-    }
-
-    public void setSportsmanId(Long sportsmanId) {
-        this.sportsmanId = sportsmanId;
-    }
-
-
 }

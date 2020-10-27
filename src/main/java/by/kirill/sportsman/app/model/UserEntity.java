@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})  // проверить показать.
 @Table(name = "sportsmans")
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

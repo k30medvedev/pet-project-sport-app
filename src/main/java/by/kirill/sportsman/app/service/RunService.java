@@ -2,6 +2,7 @@ package by.kirill.sportsman.app.service;
 
 import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.repository.RunRepository;
+import by.kirill.sportsman.app.validation.ValidateStartFinish;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -28,7 +29,8 @@ public class RunService {
         return runRepository.findAll();
     }
 
-    public RunEntity saveRun(@Valid RunEntity run) {
+
+    public RunEntity saveRun( @ValidateStartFinish @Valid RunEntity run) {
         return runRepository.save(run);
     }
 
@@ -36,9 +38,13 @@ public class RunService {
         runRepository.deleteById(id);
     }
 
-    public boolean ifExist(Long id) {
-        return runRepository.existsById(id);
+    public RunEntity updateRun(Long id, RunEntity runEntity) {
+        RunEntity run = findById(id);
+        run.setStartRun(runEntity.getStartRun());
+        run.setFinishRun(runEntity.getFinishRun());
+        run.setDistance(runEntity.getDistance());
+        run.setAverage(runEntity.getAverage());
+        run.setSportsmanId(runEntity.getSportsmanId());
+        return runRepository.save(run);
     }
-//  updateRun (RunUpdateRequest RunUpdateRequest) {
-//  findById( )}
 }

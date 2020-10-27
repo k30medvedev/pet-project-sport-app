@@ -1,4 +1,4 @@
-package by.kirill.sportsman.app.controller;
+package by.kirill.sportsman.app.controller.user;
 
 public class UserDeleteDto {
     private Long id;

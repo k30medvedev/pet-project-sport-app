@@ -12,6 +12,8 @@
         </sql>
         <rollback>
             <sql>
+                ALTER TABLE runs
+                DROP COLUMN IF EXISTS average;
             </sql>
         </rollback>
     </changeSet>
