@@ -7,12 +7,9 @@
 
     <changeSet id="0003-01-add-numeric" author="kirill.medvedev">
         <sql>
-            SELECT average,
-            CASE WHEN average = null
-            THEN
-            END
-            FROM runs;
-
+            UPDATE runs SET average = (SELECT (extract(epoch from finish_run ) -
+            extract(epoch from start_run ))/distance)
+            WHERE average IS NULL;
         </sql>
         <rollback>
             <sql>
@@ -20,3 +17,4 @@
         </rollback>
     </changeSet>
 </databaseChangeLog>
+

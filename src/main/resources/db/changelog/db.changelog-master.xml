@@ -7,9 +7,8 @@
 
     <include relativeToChangelogFile="true" file="db.changelog-0001-init.xml"/>
     <include relativeToChangelogFile="true" file="db.changelog-0002-average.xml"/>
-<!--    <include relativeToChangelogFile="true" file="db.changelog-0003-average-value.xml"/>-->
-<!--    <include relativeToChangelogFile="true" file="db.changelog-0004-average-not-null.xml"/>-->
-
+    <include relativeToChangelogFile="true" file="db.changelog-0003-average-value.xml"/>
+    <include relativeToChangelogFile="true" file="db.changelog-0004-average-not-null.xml"/>
 
 </databaseChangeLog>
 

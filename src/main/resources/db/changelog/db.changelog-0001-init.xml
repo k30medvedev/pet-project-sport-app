@@ -17,8 +17,8 @@
         </sql>
         <rollback>
             <sql>
-                DROP TABLE [IF EXISTS] sportsmans
-                [CASCADE | RESTRICT];
+<!--                DROP TABLE [IF EXISTS] sportsmans-->
+<!--                [CASCADE | RESTRICT];-->
             </sql>
         </rollback>
     </changeSet>
@@ -35,8 +35,8 @@
         </sql>
         <rollback>
             <sql>
-                DROP TABLE [IF EXISTS] runs
-                [CASCADE | RESTRICT];
+<!--                DROP TABLE [IF EXISTS] runs-->
+<!--                [CASCADE | RESTRICT];-->
             </sql>
         </rollback>
     </changeSet>

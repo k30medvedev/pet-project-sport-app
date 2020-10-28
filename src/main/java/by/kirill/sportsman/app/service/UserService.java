@@ -1,23 +1,22 @@
-package by.kirill.sportsman.app.service;
+package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
 import by.kirill.sportsman.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 
-@Validated
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserValidationService userValidationService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,UserValidationService userValidationService) {
         this.userRepository = userRepository;
+       this.userValidationService = userValidationService;
     }
 
     public UserEntity findById(Long id) {
@@ -28,7 +27,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserEntity saveUser(@Valid UserEntity user) {
+    public UserEntity createUser(UserEntity user) throws EmailAlreadyInUseException {
+        userValidationService.validateUserCreationReq(user);
+
+        user.setId(null);
         return userRepository.save(user);
     }
 
@@ -37,12 +39,14 @@ public class UserService {
         userRepository.deleteByIdCascade(id);
     }
 
-    public UserEntity userUpdate(Long id, UserEntity userEntity) {
-        UserEntity user = findById(id);
-        user.setFirstName(userEntity.getFirstName());
-        user.setLastName(userEntity.getLastName());
-        user.setBirthday(userEntity.getBirthday());
-        user.setEmail(userEntity.getEmail());
+    public UserEntity updateUser(UserUpdateReq updateReq) {
+        UserEntity user = findById(updateReq.getId());
+        userValidationService.validateUserUpdateReq(user, updateReq);
+
+        user.setFirstName(updateReq.getFirstName());
+        user.setLastName(updateReq.getLastName());
+        user.setBirthday(updateReq.getBirthday());
+        user.setEmail(updateReq.getEmail());
         userRepository.save(user);
         return user;
     }

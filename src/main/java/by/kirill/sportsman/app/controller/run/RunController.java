@@ -2,7 +2,6 @@ package by.kirill.sportsman.app.controller.run;
 
 import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.service.RunService;
-import by.kirill.sportsman.app.service.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +14,12 @@ class RunController {
 
     private final ModelMapper modelMapper;
     private final RunService runService;
-    private final Converter converter;
+    private final RunDtoConverter converter;
 
-    RunController(ModelMapper modelMapper, RunService runService, Converter converterDto) {
+    RunController(ModelMapper modelMapper, RunService runService, RunDtoConverter converter) {
         this.modelMapper = modelMapper;
         this.runService = runService;
-        this.converter = converterDto;
+        this.converter = converter;
     }
 
     @GetMapping("/runs")
@@ -33,7 +32,7 @@ class RunController {
         List<RunUserDto> dtoList = modelMapper.map(runList, listType);
         runsListDto.setRuns(dtoList);
         return runsListDto;
-    } // конвертер,метод.
+    }
 
     @PostMapping("/runs")
     RunUserDto createRun(@RequestBody RunCreationDto dto) {
@@ -62,6 +61,5 @@ class RunController {
         runService.deleteById(id);
         return dto;
     }
-
 
 }

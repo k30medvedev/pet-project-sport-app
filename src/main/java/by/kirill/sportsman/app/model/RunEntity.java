@@ -1,15 +1,8 @@
 package by.kirill.sportsman.app.model;
 
-import by.kirill.sportsman.app.validation.ValidateStartFinish;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.Locale;
 
 @Entity
 @Table(name = "runs")

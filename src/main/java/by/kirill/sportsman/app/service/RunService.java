@@ -2,7 +2,6 @@ package by.kirill.sportsman.app.service;
 
 import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.repository.RunRepository;
-import by.kirill.sportsman.app.validation.ValidateStartFinish;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -30,7 +29,7 @@ public class RunService {
     }
 
 
-    public RunEntity saveRun( @ValidateStartFinish @Valid RunEntity run) {
+    public RunEntity saveRun( @Valid RunEntity run) {
         return runRepository.save(run);
     }
 

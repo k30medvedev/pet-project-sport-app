@@ -1,8 +1,9 @@
 package by.kirill.sportsman.app.controller.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
-import by.kirill.sportsman.app.service.Converter;
-import by.kirill.sportsman.app.service.UserService;
+import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.service.user.EmailAlreadyInUseException;
+import by.kirill.sportsman.app.service.user.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,11 @@ import java.util.List;
 @RestController
 class UserController {
     private final UserService userService;
-    private final Converter converter;
+    private final UserDtoConverter userDtoConverter;
 
-    public UserController(UserService userService, Converter converter) {
+    public UserController(UserService userService,  UserDtoConverter userDtoConverter) {
         this.userService = userService;
-        this.converter = converter;
+        this.userDtoConverter = userDtoConverter;
     }
 
 
@@ -26,13 +27,15 @@ class UserController {
     @ResponseBody
     UserListDto getall() {
         UserListDto userDto = new UserListDto();
+        List<UserDto> listUsersDto = convertToLIstDto();
+        userDto.setSportsmans(listUsersDto);
+        return userDto;
+    }
+    private List<UserDto> convertToLIstDto() {
         List<UserEntity> listUsers = userService.findAll();
         Type listType = new TypeToken<List<UserDto>>() {
         }.getType();
-        List<UserDto> listUsersDto = new ModelMapper().map(listUsers, listType);
-        userDto.setSportsmans(listUsersDto);
-        return userDto;
-
+        return new ModelMapper().map(listUsers, listType);
     }
 
     @GetMapping("/sportsmans/{id}")
@@ -40,22 +43,22 @@ class UserController {
     UserDto findUser(@PathVariable Long id) {
         UserEntity user = userService.findById(id);
         UserDto dto = new UserDto();
-        converter.convertDtoToUser(user, dto);
+        userDtoConverter.convertDtoToUser(user, dto);
         return dto;
     }
 
     @PostMapping("/sportsmans")
-    UserDto createUser(@RequestBody UserCreationDto dto) {
-        UserEntity userEntity = converter.convertDtoToUser(dto);
-        userEntity = userService.saveUser(userEntity);
-        return converter.convertUserToDto(userEntity);
+    UserDto createUser(@RequestBody UserCreationDto dto) throws EmailAlreadyInUseException {
+        UserEntity userEntity = userDtoConverter.convertDtoToUser(dto);
+        userEntity = userService.createUser(userEntity);
+        return userDtoConverter.convertUserToDto(userEntity);
     }
 
     @PutMapping("/sportsmans/{id}")
-    UserDto updateUserById(@PathVariable Long id, @RequestBody UserCreationDto dto) {
-        UserEntity userEntity = converter.convertDtoToUser(dto);
-        userEntity = userService.userUpdate(id, userEntity);
-        return converter.convertUserToDto(userEntity);
+    UserDto updateUserById(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
+        UserUpdateReq req = userDtoConverter.convertDtoToUser(id, dto);
+        UserEntity userEntity = userService.updateUser(req);
+        return userDtoConverter.convertUserToDto(userEntity);
     }
 
     @DeleteMapping("/sportsmans/{id}")

@@ -1,18 +1,10 @@
 package by.kirill.sportsman.app.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})  // проверить показать.
 @Table(name = "sportsmans")
 public class UserEntity {
     @Id
@@ -20,12 +12,12 @@ public class UserEntity {
     private Long id;
 
     @NotNull
-    @Size(min=2, max=30,message = "min 2 characters max 30 ")
+    @Size(min = 2, max = 30, message = "min 2 characters max 30 ")
     @Column(name = "first_name")
     private String firstName;
 
     @NotNull
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     @Column(name = "last_name")
     private String lastName;
 
@@ -34,18 +26,19 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
-    @Past
+    @PastOrPresent
     @NotNull
     @Column(name = "birthday")
     private LocalDate birthday;
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserEntity{" +
                 "id=" + id +
-                ", firstname='" + firstName + '\'' +
-                ", lastname='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", birthday=" + birthday +
                 '}';
     }
 

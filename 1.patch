@@ -1,0 +1,495 @@
+diff --git a/src/main/java/by/kirill/sportsman/app/controller/user/UserController.java b/src/main/java/by/kirill/sportsman/app/controller/user/UserController.java
+index a657843..a7d0833 100644
+--- a/src/main/java/by/kirill/sportsman/app/controller/user/UserController.java
++++ b/src/main/java/by/kirill/sportsman/app/controller/user/UserController.java
+@@ -1,8 +1,9 @@
+ package by.kirill.sportsman.app.controller.user;
+ 
+ import by.kirill.sportsman.app.model.UserEntity;
++import by.kirill.sportsman.app.model.UserUpdateReq;
+ import by.kirill.sportsman.app.service.Converter;
+-import by.kirill.sportsman.app.service.UserService;
++import by.kirill.sportsman.app.service.user.UserService;
+ import org.modelmapper.ModelMapper;
+ import org.modelmapper.TypeToken;
+ import org.springframework.web.bind.annotation.*;
+@@ -15,10 +16,12 @@ import java.util.List;
+ class UserController {
+     private final UserService userService;
+     private final Converter converter;
++    private final UserDtoConverter userDtoConverter;
+ 
+-    public UserController(UserService userService, Converter converter) {
++    public UserController(UserService userService, Converter converter, UserDtoConverter userDtoConverter) {
+         this.userService = userService;
+         this.converter = converter;
++        this.userDtoConverter = userDtoConverter;
+     }
+ 
+ 
+@@ -47,14 +50,14 @@ class UserController {
+     @PostMapping("/sportsmans")
+     UserDto createUser(@RequestBody UserCreationDto dto) {
+         UserEntity userEntity = converter.convertDtoToUser(dto);
+-        userEntity = userService.saveUser(userEntity);
++        userEntity = userService.createUser(userEntity);
+         return converter.convertUserToDto(userEntity);
+     }
+ 
+     @PutMapping("/sportsmans/{id}")
+-    UserDto updateUserById(@PathVariable Long id, @RequestBody UserCreationDto dto) {
+-        UserEntity userEntity = converter.convertDtoToUser(dto);
+-        userEntity = userService.userUpdate(id, userEntity);
++    UserDto updateUserById(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
++        UserUpdateReq req = userDtoConverter.convertDtoToUser(id, dto);
++        UserEntity userEntity = userService.updateUser(req);
+         return converter.convertUserToDto(userEntity);
+     }
+ 
+diff --git a/src/main/java/by/kirill/sportsman/app/controller/user/UserCreationDto.java b/src/main/java/by/kirill/sportsman/app/controller/user/UserCreationDto.java
+index 7113c3a..5ddd682 100644
+--- a/src/main/java/by/kirill/sportsman/app/controller/user/UserCreationDto.java
++++ b/src/main/java/by/kirill/sportsman/app/controller/user/UserCreationDto.java
+@@ -1,5 +1,7 @@
+ package by.kirill.sportsman.app.controller.user;
+ 
++import com.fasterxml.jackson.annotation.JsonFormat;
++
+ import java.time.LocalDate;
+ 
+ public class UserCreationDto {
+@@ -36,6 +38,7 @@ public class UserCreationDto {
+         return birthday;
+     }
+ 
+-    public void setBirthday(LocalDate birthday) { this.birthday = birthday;
++    public void setBirthday(LocalDate birthday) {
++        this.birthday = birthday;
+     }
+ }
+diff --git a/src/main/java/by/kirill/sportsman/app/controller/user/UserDtoConverter.java b/src/main/java/by/kirill/sportsman/app/controller/user/UserDtoConverter.java
+index 0470316..29c65f9 100644
+--- a/src/main/java/by/kirill/sportsman/app/controller/user/UserDtoConverter.java
++++ b/src/main/java/by/kirill/sportsman/app/controller/user/UserDtoConverter.java
+@@ -1,4 +1,20 @@
+-package by.kirill.sportsman.app.controller.user;/**
+- * Responsible for TODO
+- */public class UserDtoConverter {
++package by.kirill.sportsman.app.controller.user;
++
++import by.kirill.sportsman.app.model.UserEntity;
++import by.kirill.sportsman.app.model.UserUpdateReq;
++import org.springframework.stereotype.Component;
++
++@Component
++class UserDtoConverter {
++
++    UserUpdateReq convertDtoToUser(Long id, UserUpdateDto dto) {
++        UserUpdateReq model = new UserUpdateReq();
++        model.setId(id);
++        model.setFirstName(dto.getFirstName());
++        model.setLastName(dto.getLastName());
++        model.setEmail(dto.getEmail());
++        model.setBirthday(dto.getBirthday());
++        return model;
++    }
++
+ }
+diff --git a/src/main/java/by/kirill/sportsman/app/controller/user/UserUpdateDto.java b/src/main/java/by/kirill/sportsman/app/controller/user/UserUpdateDto.java
+index 5ddd682..336f56e 100644
+--- a/src/main/java/by/kirill/sportsman/app/controller/user/UserUpdateDto.java
++++ b/src/main/java/by/kirill/sportsman/app/controller/user/UserUpdateDto.java
+@@ -1,10 +1,8 @@
+ package by.kirill.sportsman.app.controller.user;
+ 
+-import com.fasterxml.jackson.annotation.JsonFormat;
+-
+ import java.time.LocalDate;
+ 
+-public class UserCreationDto {
++public class UserUpdateDto {
+     private String firstName;
+     private String lastName;
+     private String email;
+diff --git a/src/main/java/by/kirill/sportsman/app/model/UserEntity.java b/src/main/java/by/kirill/sportsman/app/model/UserEntity.java
+index a2061b2..00f4996 100644
+--- a/src/main/java/by/kirill/sportsman/app/model/UserEntity.java
++++ b/src/main/java/by/kirill/sportsman/app/model/UserEntity.java
+@@ -1,18 +1,16 @@
+ package by.kirill.sportsman.app.model;
+ 
++import by.kirill.sportsman.app.service.user.EmailNotInUse;
+ import com.fasterxml.jackson.annotation.JsonFormat;
+ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+ import org.springframework.format.annotation.DateTimeFormat;
+ 
+ import javax.persistence.*;
+-import javax.validation.constraints.Email;
+-import javax.validation.constraints.NotNull;
+-import javax.validation.constraints.Past;
+-import javax.validation.constraints.Size;
++import javax.validation.constraints.*;
+ import java.time.LocalDate;
+ 
+ @Entity
+-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})  // проверить показать.
++@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // проверить показать.
+ @Table(name = "sportsmans")
+ public class UserEntity {
+     @Id
+@@ -20,12 +18,12 @@ public class UserEntity {
+     private Long id;
+ 
+     @NotNull
+-    @Size(min=2, max=30,message = "min 2 characters max 30 ")
++    @Size(min = 2, max = 30, message = "min 2 characters max 30 ")
+     @Column(name = "first_name")
+     private String firstName;
+ 
+     @NotNull
+-    @Size(min=2, max=30)
++    @Size(min = 2, max = 30)
+     @Column(name = "last_name")
+     private String lastName;
+ 
+@@ -34,7 +32,7 @@ public class UserEntity {
+     @Column(name = "email")
+     private String email;
+ 
+-    @Past
++    @PastOrPresent
+     @NotNull
+     @Column(name = "birthday")
+     private LocalDate birthday;
+diff --git a/src/main/java/by/kirill/sportsman/app/model/UserUpdateReq.java b/src/main/java/by/kirill/sportsman/app/model/UserUpdateReq.java
+index 80bb677..cda8d47 100644
+--- a/src/main/java/by/kirill/sportsman/app/model/UserUpdateReq.java
++++ b/src/main/java/by/kirill/sportsman/app/model/UserUpdateReq.java
+@@ -1,53 +1,37 @@
+ package by.kirill.sportsman.app.model;
+ 
+ import by.kirill.sportsman.app.service.user.EmailNotInUse;
+import com.fasterxml.jackson.annotation.JsonFormat;
+ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
+ 
+ import javax.persistence.*;
+import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
+ import java.time.LocalDate;
+ 
+@EmailNotInUse
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // проверить показать.
+@Table(name = "sportsmans")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserUpdateReq {
+
+    @NotNull
+     private Long id;
+ 
+     @NotNull
+     @Size(min = 2, max = 30, message = "min 2 characters max 30 ")
+     @Column(name = "first_name")
+     private String firstName;
+ 
+     @NotNull
+     @Size(min = 2, max = 30)
+    @Column(name = "last_name")
+     private String lastName;
+ 
+     @Email
+     @NotNull
+   @Column(name = "email")
+     private String email;
+ 
+     @PastOrPresent
+     @NotNull
+   @Column(name = "birthday")
+     private LocalDate birthday;
+ 
+-    @Override
+-    public String toString() {
+-        return "User{" +
+-                "id=" + id +
+-                ", firstname='" + firstName + '\'' +
+-                ", lastname='" + lastName + '\'' +
+-                ", email='" + email + '\'' +
+-                '}';
+-    }
+-
+     public Long getId() {
+         return id;
+     }
+@@ -68,22 +52,22 @@ public class UserEntity {
+         return lastName;
+     }
+ 
+-    public void setLastName(String lastname) {
+-        this.lastName = lastname;
++    public void setLastName(String lastName) {
++        this.lastName = lastName;
+     }
+ 
+     public String getEmail() {
+         return email;
+     }
+ 
+-    public LocalDate getBirthday() {
+-        return birthday;
+-    }
+-
+     public void setEmail(String email) {
+         this.email = email;
+     }
+ 
++    public LocalDate getBirthday() {
++        return birthday;
++    }
++
+     public void setBirthday(LocalDate birthday) {
+         this.birthday = birthday;
+     }
+diff --git a/src/main/java/by/kirill/sportsman/app/repository/UserRepository.java b/src/main/java/by/kirill/sportsman/app/repository/UserRepository.java
+index 71f5dde..fb1b9ac 100644
+--- a/src/main/java/by/kirill/sportsman/app/repository/UserRepository.java
++++ b/src/main/java/by/kirill/sportsman/app/repository/UserRepository.java
+@@ -5,10 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.data.jpa.repository.Modifying;
+ import org.springframework.data.jpa.repository.Query;
+ 
++import java.util.List;
++
+ public interface UserRepository extends JpaRepository<UserEntity, Long> {
+     @Modifying
+     @Query(value = "DELETE FROM sportsmans WHERE id = ?1",nativeQuery=true)
+     void deleteByIdCascade(long id);
+ 
++    boolean existsByEmailIgnoreCase(String email);
++
++    List<UserEntity> findAllByEmailIgnoreCase(String email);
++
+ }
+ 
+diff --git a/src/main/java/by/kirill/sportsman/app/service/user/EmailAlreadyInUseException.java b/src/main/java/by/kirill/sportsman/app/service/user/EmailAlreadyInUseException.java
+index 9e41e47..041deaa 100644
+--- a/src/main/java/by/kirill/sportsman/app/service/user/EmailAlreadyInUseException.java
++++ b/src/main/java/by/kirill/sportsman/app/service/user/EmailAlreadyInUseException.java
+@@ -1,4 +1,12 @@
+-package by.kirill.sportsman.app.service.user;/**
+- * Responsible for TODO
+- */public class EmailAlreadyInUseException {
++package by.kirill.sportsman.app.service.user;
++
++import org.springframework.http.HttpStatus;
++import org.springframework.web.bind.annotation.ResponseStatus;
++
++@ResponseStatus(HttpStatus.BAD_REQUEST)
++public class EmailAlreadyInUseException extends RuntimeException {
++
++    public EmailAlreadyInUseException(String message) {
++        super(message);
++    }
+ }
+diff --git a/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUse.java b/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUse.java
+index 04c7961..f2851ce 100644
+--- a/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUse.java
++++ b/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUse.java
+@@ -1,27 +1,21 @@
+-package by.kirill.sportsman.app.validation;
++package by.kirill.sportsman.app.service.user;
+ 
+ 
+-import org.hibernate.annotations.Parameter;
++import by.kirill.sportsman.app.validation.RunValidate;
+ 
+ import javax.validation.Constraint;
+ import javax.validation.Payload;
+ import java.lang.annotation.*;
+ 
+-import static java.lang.annotation.ElementType.FIELD;
+-
+-@Documented
+-@Constraint(validatedBy = RunValidate.class)
+-@Target(ElementType.PARAMETER)
+-
++@Target({ElementType.TYPE})
+ @Retention(RetentionPolicy.RUNTIME)
+-public @interface ValidateStartFinish {
++@Constraint(validatedBy = EmailNotInUseValidator.class)
++public @interface EmailNotInUse {
+ 
+-    String message() default
+-            "finishRun must be great than startRun";
++    String message() default "email is in use";
+ 
+     Class<?>[] groups() default {};
+ 
+     Class<? extends Payload>[] payload() default {};
+-
+ }
+ 
+diff --git a/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUseValidator.java b/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUseValidator.java
+index 31f67e0..7b1213b 100644
+--- a/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUseValidator.java
++++ b/src/main/java/by/kirill/sportsman/app/service/user/EmailNotInUseValidator.java
+@@ -1,7 +1,41 @@
+ package by.kirill.sportsman.app.service.user;
+ 
+-/**
+- * Responsible for TODO
+- */
+-public class EmailNotInUseValidator {
++import by.kirill.sportsman.app.model.UserEntity;
++import by.kirill.sportsman.app.model.UserUpdateReq;
++import by.kirill.sportsman.app.repository.UserRepository;
++
++import javax.validation.ConstraintValidator;
++import javax.validation.ConstraintValidatorContext;
++import java.util.List;
++
++public class EmailNotInUseValidator implements ConstraintValidator<EmailNotInUse, UserUpdateReq> {
++
++    private final UserRepository userRepository;
++
++    public EmailNotInUseValidator(UserRepository userRepository) {
++        this.userRepository = userRepository;
++    }
++
++    @Override
++    public void initialize(EmailNotInUse constraintAnnotation) {
++
++    }
++
++    @Override
++    public boolean isValid(UserUpdateReq updateReq, ConstraintValidatorContext constraintValidatorContext) {
++        String email = updateReq.getEmail();
++        List<UserEntity> existingRecords = userRepository.findAllByEmailIgnoreCase(email);
++        if (existingRecords.isEmpty()) {
++            return true;
++        }
++
++        if (existingRecords.size() > 1) {
++            return false;
++        }
++
++        UserEntity existingRecord = existingRecords.get(0);
++        Long existingRecordId = existingRecord.getId();
++        Long recordIdToUpdate = updateReq.getId();
++        return existingRecordId.equals(recordIdToUpdate);
++    }
+ }
+diff --git a/src/main/java/by/kirill/sportsman/app/service/user/UserService.java b/src/main/java/by/kirill/sportsman/app/service/user/UserService.java
+index 0f1fe5d..9b2e1c4 100644
+--- a/src/main/java/by/kirill/sportsman/app/service/user/UserService.java
++++ b/src/main/java/by/kirill/sportsman/app/service/user/UserService.java
+@@ -1,23 +1,22 @@
+-package by.kirill.sportsman.app.service;
++package by.kirill.sportsman.app.service.user;
+ 
+-import by.kirill.sportsman.app.model.RunEntity;
+ import by.kirill.sportsman.app.model.UserEntity;
++import by.kirill.sportsman.app.model.UserUpdateReq;
+ import by.kirill.sportsman.app.repository.UserRepository;
+ import org.springframework.stereotype.Service;
+-import org.springframework.validation.annotation.Validated;
+ 
+ import javax.transaction.Transactional;
+-import javax.validation.Valid;
+ import java.util.List;
+ 
+-@Validated
+ @Service
+ public class UserService {
+ 
+     private final UserRepository userRepository;
++    private final UserValidationService userValidationService;
+ 
+-    public UserService(UserRepository userRepository) {
++    public UserService(UserRepository userRepository, UserValidationService userValidationService) {
+         this.userRepository = userRepository;
++        this.userValidationService = userValidationService;
+     }
+ 
+     public UserEntity findById(Long id) {
+@@ -28,7 +27,10 @@ public class UserService {
+         return userRepository.findAll();
+     }
+ 
+-    public UserEntity saveUser(@Valid UserEntity user) {
++    public UserEntity createUser(UserEntity user) {
++        userValidationService.validateUserCreationReq(user);
++
++        user.setId(null);
+         return userRepository.save(user);
+     }
+ 
+@@ -37,12 +39,14 @@ public class UserService {
+         userRepository.deleteByIdCascade(id);
+     }
+ 
+-    public UserEntity userUpdate(Long id, UserEntity userEntity) {
+-        UserEntity user = findById(id);
+-        user.setFirstName(userEntity.getFirstName());
+-        user.setLastName(userEntity.getLastName());
+-        user.setBirthday(userEntity.getBirthday());
+-        user.setEmail(userEntity.getEmail());
++    public UserEntity updateUser(UserUpdateReq updateReq) {
++        UserEntity user = findById(updateReq.getId());
++        userValidationService.validateUserUpdateReq(user, updateReq);
++
++        user.setFirstName(updateReq.getFirstName());
++        user.setLastName(updateReq.getLastName());
++        user.setBirthday(updateReq.getBirthday());
++        user.setEmail(updateReq.getEmail());
+         userRepository.save(user);
+         return user;
+     }
+diff --git a/src/main/java/by/kirill/sportsman/app/service/user/UserValidationService.java b/src/main/java/by/kirill/sportsman/app/service/user/UserValidationService.java
+index 62233eb..1b38fdb 100644
+--- a/src/main/java/by/kirill/sportsman/app/service/user/UserValidationService.java
++++ b/src/main/java/by/kirill/sportsman/app/service/user/UserValidationService.java
+@@ -1,4 +1,33 @@
+-package by.kirill.sportsman.app.service.user;/**
+- * Responsible for TODO
+- */public class UserValidationService {
+-}
++package by.kirill.sportsman.app.service.user;
++
++import by.kirill.sportsman.app.model.UserEntity;
++import by.kirill.sportsman.app.model.UserUpdateReq;
++import by.kirill.sportsman.app.repository.UserRepository;
++import org.springframework.stereotype.Service;
++import org.springframework.validation.annotation.Validated;
++
++import javax.validation.Valid;
++import javax.validation.constraints.NotNull;
++
++@Validated
++@Service
++class UserValidationService {
++
++    private final UserRepository userRepository;
++
++    UserValidationService(UserRepository userRepository) {
++        this.userRepository = userRepository;
++    }
++
++    void validateUserCreationReq(@Valid UserEntity userCreationReq) {
++        String email = userCreationReq.getEmail();
++        boolean suchEmailAlreadyExists = userRepository.existsByEmailIgnoreCase(email);
++        if (suchEmailAlreadyExists) {
++            throw new EmailAlreadyInUseException(email);
++        }
++    }
++
++    void validateUserUpdateReq(@NotNull UserEntity existingUser, @Valid UserUpdateReq userUpdateReq) {
++
++    }
++}
+\ No newline at end of file
