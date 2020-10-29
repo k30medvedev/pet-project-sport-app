@@ -1,8 +1,6 @@
 package by.kirill.sportsman.app.controller.run;
 
-import javax.persistence.Column;
 import java.time.OffsetDateTime;
-import java.util.Date;
 
 public class RunUserDto {
     private Long id;

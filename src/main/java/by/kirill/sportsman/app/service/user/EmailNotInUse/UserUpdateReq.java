@@ -1,9 +1,7 @@
-package by.kirill.sportsman.app.service.EmailNotInUse;
+package by.kirill.sportsman.app.service.user.EmailNotInUse;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
@@ -20,22 +18,18 @@ public class UserUpdateReq {
 
    @NotNull
    @Size(min = 2, max = 30, message = "min 2 characters max 30 ")
-   @Column(name = "first_name")
    private String firstName;
 
    @NotNull
    @Size(min = 2, max = 30)
-   @Column(name = "last_name")
    private String lastName;
 
    @Email
    @NotNull
-   @Column(name = "email")
    private String email;
 
    @PastOrPresent
    @NotNull
-   @Column(name = "birthday")
    private LocalDate birthday;
 
    public Long getId() {

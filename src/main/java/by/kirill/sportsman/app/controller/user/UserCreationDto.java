@@ -1,6 +1,5 @@
 package by.kirill.sportsman.app.controller.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 

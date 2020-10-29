@@ -2,7 +2,7 @@ package by.kirill.sportsman.app.service.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
 import by.kirill.sportsman.app.repository.UserRepository;
-import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
 import com.sun.istack.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +18,7 @@ public class UserValidationService {
     UserValidationService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     void validateUserCreationReq(@Valid UserEntity userCreationReq) throws EmailAlreadyInUseException {
         String email = userCreationReq.getEmail();

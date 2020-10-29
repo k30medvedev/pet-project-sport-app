@@ -1,42 +1,31 @@
 package by.kirill.sportsman.app.controller.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
-import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
 import by.kirill.sportsman.app.service.user.EmailAlreadyInUseException;
 import by.kirill.sportsman.app.service.user.UserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Type;
-import java.util.List;
-
 
 @RestController
 class UserController {
     private final UserService userService;
     private final UserDtoConverter userDtoConverter;
+    private final ModelMapper modelMapper;
 
-    public UserController(UserService userService,  UserDtoConverter userDtoConverter) {
+    public UserController(UserService userService, UserDtoConverter userDtoConverter, ModelMapper modelMapper) {
         this.userService = userService;
         this.userDtoConverter = userDtoConverter;
+        this.modelMapper = modelMapper;
     }
 
 
     @GetMapping("/sportsmans")
     @ResponseBody
     UserListDto getall() {
-        UserListDto userDto = new UserListDto();
-        List<UserDto> listUsersDto = convertToLIstDto();
-        userDto.setSportsmans(listUsersDto);
-        return userDto;
+        return userDtoConverter.getUserListDto();
     }
-    private List<UserDto> convertToLIstDto() {
-        List<UserEntity> listUsers = userService.findAll();
-        Type listType = new TypeToken<List<UserDto>>() {
-        }.getType();
-        return new ModelMapper().map(listUsers, listType);
-    }
+
 
     @GetMapping("/sportsmans/{id}")
     @ResponseBody

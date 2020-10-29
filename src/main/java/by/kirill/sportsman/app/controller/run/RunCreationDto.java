@@ -9,8 +9,6 @@ public class RunCreationDto {
     private Double distance;
     private Long sportsmanId;
 
-
-
     public OffsetDateTime getStartRun() {
         return startRun;
     }

@@ -1,13 +1,15 @@
 package by.kirill.sportsman.app.controller.run;
 
 import by.kirill.sportsman.app.model.RunEntity;
-import by.kirill.sportsman.app.service.RunService;
+import by.kirill.sportsman.app.service.run.RunService;
+import by.kirill.sportsman.app.service.run.StarGreatThanFinisException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
 
 @RestController
 class RunController {
@@ -35,7 +37,7 @@ class RunController {
     }
 
     @PostMapping("/runs")
-    RunUserDto createRun(@RequestBody RunCreationDto dto) {
+    RunUserDto createRun(@RequestBody RunCreationDto dto) throws StarGreatThanFinisException {
         RunEntity runEntity = converter.convertDtoToModel(dto);
         runEntity = runService.saveRun(runEntity);
         RunUserDto runUserDto = new RunUserDto();

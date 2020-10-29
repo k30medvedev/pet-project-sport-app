@@ -1,15 +1,25 @@
 package by.kirill.sportsman.app.controller.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
-import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
 import by.kirill.sportsman.app.service.user.UserService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 @Component
 public class UserDtoConverter {
 
     private UserService userService;
+    private final ModelMapper modelMapper;
 
+    public UserDtoConverter(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
 
     UserUpdateReq convertDtoToUser(Long id, UserUpdateDto dto) {
         UserUpdateReq model = new UserUpdateReq();
@@ -48,5 +58,13 @@ public class UserDtoConverter {
         return dto;
     }
 
-
+    public UserListDto getUserListDto() {
+        UserListDto userDto = new UserListDto();
+        List<UserEntity> listUsers = userService.findAll();
+        Type listType = new TypeToken<List<UserDto>>() {
+        }.getType();
+        List<UserDto> listUsersDto = modelMapper.map(listUsers, listType);
+        userDto.setSportsmans(listUsersDto);
+        return userDto;
+    }
 }

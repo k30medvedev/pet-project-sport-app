@@ -1,7 +1,7 @@
 package by.kirill.sportsman.app.service.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
-import by.kirill.sportsman.app.service.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
 import by.kirill.sportsman.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +14,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserValidationService userValidationService;
 
-    public UserService(UserRepository userRepository,UserValidationService userValidationService) {
+    public UserService(UserRepository userRepository, UserValidationService userValidationService) {
         this.userRepository = userRepository;
-       this.userValidationService = userValidationService;
+        this.userValidationService = userValidationService;
     }
+
 
     public UserEntity findById(Long id) {
         return userRepository.getOne(id);
@@ -40,9 +41,9 @@ public class UserService {
     }
 
     public UserEntity updateUser(UserUpdateReq updateReq) {
+
         UserEntity user = findById(updateReq.getId());
         userValidationService.validateUserUpdateReq(user, updateReq);
-
         user.setFirstName(updateReq.getFirstName());
         user.setLastName(updateReq.getLastName());
         user.setBirthday(updateReq.getBirthday());
@@ -51,3 +52,4 @@ public class UserService {
         return user;
     }
 }
+

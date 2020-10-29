@@ -32,8 +32,7 @@ public class RunEntity {
 
     public Double calculateAverage() {
         long dif = finishRun.toEpochSecond() - startRun.toEpochSecond();
-        Double average = dif / distance;
-        return average;
+        return dif / distance;
     }
 
     public Double getAverage() {
@@ -44,7 +43,6 @@ public class RunEntity {
     public void setAverage(Double average) {
         this.average = average;
     }
-
 
     public Long getSportsmanId() {
         return sportsmanId;
@@ -70,7 +68,6 @@ public class RunEntity {
         this.finishRun = finishRun;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -78,7 +75,6 @@ public class RunEntity {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public Double getDistance() {
         return distance;

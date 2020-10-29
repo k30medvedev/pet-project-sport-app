@@ -1,13 +1,10 @@
 package by.kirill.sportsman.app.controller.run;
 
 import by.kirill.sportsman.app.model.RunEntity;
-import by.kirill.sportsman.app.service.RunService;
+import by.kirill.sportsman.app.service.run.RunService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Type;
-import java.util.List;
 
 @Component
 public class RunDtoConverter {
@@ -53,6 +50,5 @@ public class RunDtoConverter {
         runUpdateDto.setSportsmanId(run.getSportsmanId());
         runUpdateDto.setAverage(run.calculateAverage());
     }
-
 
 }
