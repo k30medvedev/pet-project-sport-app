@@ -35,6 +35,7 @@ public class RunEntity {
         return dif / distance;
     }
 
+
     public Double getAverage() {
         return average;
     }

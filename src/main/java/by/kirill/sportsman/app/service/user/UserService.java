@@ -6,6 +6,7 @@ import by.kirill.sportsman.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -30,7 +31,6 @@ public class UserService {
 
     public UserEntity createUser(UserEntity user) throws EmailAlreadyInUseException {
         userValidationService.validateUserCreationReq(user);
-
         user.setId(null);
         return userRepository.save(user);
     }
