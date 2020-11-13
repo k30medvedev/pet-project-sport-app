@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 public class RunValidationService {
 
-    void validateRun(@Valid RunEntity run) throws StarGreatThanFinisException {
+    void validateRun(@Valid RunEntity run) throws StarGreatThanFinisException,DistanceNotZeroException{
         if (run.getStartRun().toEpochSecond() > run.getFinishRun().toEpochSecond()) {
             throw new StarGreatThanFinisException("Start must be more than Finish");
         }
@@ -22,5 +22,6 @@ public class RunValidationService {
     }
 
     public void validateRun(@Valid @NotNull RunEntity run, @Valid RunEntity runEntity) {
+
     }
 }

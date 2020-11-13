@@ -39,7 +39,7 @@ class RunController {
     @PostMapping("/runs")
     RunUserDto createRun(@RequestBody RunCreationDto dto) throws StarGreatThanFinisException {
         RunEntity runEntity = converter.convertDtoToModel(dto);
-        runEntity = runService.saveRun(runEntity);
+        runEntity = runService.createRun(runEntity);
         RunUserDto runUserDto = new RunUserDto();
         runUserDto = converter.convertModelToDto(runEntity, runUserDto);
         return runUserDto;

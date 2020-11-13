@@ -1,7 +1,6 @@
 package by.kirill.sportsman.app.service.user.EmailNotInUse;
-
+import javax.persistence.*;
 import com.sun.istack.NotNull;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;

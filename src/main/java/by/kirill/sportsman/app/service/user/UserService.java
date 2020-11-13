@@ -6,7 +6,6 @@ import by.kirill.sportsman.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -35,13 +34,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
+
     @Transactional
     public void deleteById(Long id) {
         userRepository.deleteByIdCascade(id);
     }
 
     public UserEntity updateUser(UserUpdateReq updateReq) {
-
         UserEntity user = findById(updateReq.getId());
         userValidationService.validateUserUpdateReq(user, updateReq);
         user.setFirstName(updateReq.getFirstName());

@@ -3,6 +3,8 @@ package by.kirill.sportsman.app.service.run;
 import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.repository.RunRepository;
 import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -25,7 +27,7 @@ public class RunService {
         return runRepository.findAll();
     }
 
-    public RunEntity saveRun(RunEntity run) throws StarGreatThanFinisException {
+    public RunEntity createRun(RunEntity run) throws StarGreatThanFinisException,DistanceNotZeroException {
         runValidationService.validateRun(run);
         run.setId(null);
         return runRepository.save(run);
@@ -35,7 +37,7 @@ public class RunService {
         runRepository.deleteById(id);
     }
 
-    public RunEntity updateRun(Long id, RunEntity runEntity) {
+    public RunEntity updateRun(Long id,RunEntity runEntity) {
         RunEntity run = findById(id);
         runValidationService.validateRun(run,runEntity);
         run.setStartRun(runEntity.getStartRun());

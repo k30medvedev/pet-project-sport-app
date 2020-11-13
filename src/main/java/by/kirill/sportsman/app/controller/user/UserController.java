@@ -7,6 +7,7 @@ import by.kirill.sportsman.app.service.user.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 class UserController {
     private final UserService userService;
@@ -22,7 +23,7 @@ class UserController {
 
     @GetMapping("/sportsmans")
     @ResponseBody
-    UserListDto getall() {
+    UserListDto getAll() {
         return userDtoConverter.getUserListDto();
     }
 

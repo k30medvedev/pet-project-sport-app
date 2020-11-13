@@ -14,6 +14,7 @@ class RunEntityTest {
     void calculateAverageTest() {
         RunEntity runEntity = new RunEntity();
         Double distance = 20.5;
+        Double expectedDistance = 175.609756097561;
         ZoneId zone = ZoneId.of("+03:00");
         OffsetDateTime startRun = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
                 50000, ZoneOffset.of(String.valueOf(zone)));
@@ -22,44 +23,13 @@ class RunEntityTest {
         runEntity.setStartRun(startRun);
         runEntity.setFinishRun(finishRin);
         runEntity.setDistance(distance);
+
         runEntity.setAverage(runEntity.calculateAverage());
-        Double average = (finishRin.toEpochSecond()-startRun.toEpochSecond())/distance;
-        assertEquals(runEntity.getAverage(),average);
+
+        assertEquals(expectedDistance, runEntity.getAverage());
+        assertNotNull(runEntity.getAverage());
     }
 
-    @Test
-    void setAverageTest() {
-        Double average = 20.5;
-        RunEntity runEntity = new RunEntity();
-        runEntity.setAverage(average);
-        assertEquals(runEntity.getAverage(), average);
-    }
-
-    @Test
-    void getAverageTest() {
-        RunEntity runEntity = new RunEntity();
-        Double average = 20.5;
-        runEntity.setAverage(average);
-        Double result = runEntity.getAverage();
-        assertEquals(result, average);
-    }
-
-    @Test
-    void setSportsmanIdTest() {
-        Long id = 20l;
-        RunEntity runEntity = new RunEntity();
-        runEntity.setSportsmanId(id);
-        assertEquals(runEntity.getSportsmanId(), id);
-    }
-
-    @Test
-    void getSportsmanIdTest() {
-        RunEntity runEntity = new RunEntity();
-        Long id = 20l;
-        runEntity.setSportsmanId(id);
-        Long result = runEntity.getSportsmanId();
-        assertEquals(result, id);
-    }
 
     @Test
     void setStartRunTest() {
@@ -102,41 +72,5 @@ class RunEntityTest {
         runEntity.setFinishRun(dateTime);
         OffsetDateTime result = runEntity.getFinishRun();
         assertEquals(result, dateTime);
-    }
-
-    @Test
-    void setIdTest() {
-        RunEntity runEntity = new RunEntity();
-        Long id = 20l;
-        runEntity.setId(id);
-        Long result = runEntity.getId();
-        assertEquals(result, id);
-    }
-
-    @Test
-    void getIdTest() {
-        RunEntity runEntity = new RunEntity();
-        Long id = 20l;
-        runEntity.setId(id);
-        Long result = runEntity.getId();
-        assertEquals(result, id);
-    }
-
-    @Test
-    void setDistanceTest() {
-        Double distance = 20.0;
-        RunEntity runEntity = new RunEntity();
-        runEntity.setDistance(distance);
-        assertEquals(runEntity.getDistance(), distance);
-
-    }
-
-    @Test
-    void getDistanceTest() {
-        RunEntity runEntity = new RunEntity();
-        Double distance = 20.0;
-        runEntity.setDistance(distance);
-        Double result = runEntity.getDistance();
-        assertEquals(result, distance);
     }
 }

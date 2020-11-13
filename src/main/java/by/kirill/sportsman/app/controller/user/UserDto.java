@@ -1,12 +1,25 @@
 package by.kirill.sportsman.app.controller.user;
 
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
 public class UserDto {
+    @Id
     private Long id;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+
+    @NotNull
+    @Email
     private String email;
+
+    @PastOrPresent
+    @NotNull
     private LocalDate birthday;
 
     public Long getId() {
