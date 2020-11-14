@@ -47,20 +47,21 @@ class UserServiceTest {
 
 
     @Test
-    void findByIdTest() {
+    void shouldFindById() {
         //GIVEN
-        UserEntity userActual = Mockito.mock(UserEntity.class);
+        final long id = 1L;
+        UserEntity userExpected = Mockito.mock(UserEntity.class);
+        Mockito.when(userService.findById(id)).thenReturn(userExpected);
+
+        //WHEN
+        UserEntity userActual = userService.findById(id);
 
         //THEN
-        Mockito.when(userService.findById(1l)).thenReturn(userActual);
+        assertEquals(userActual, userExpected);
+        verify(userRepository, Mockito.only()).getOne(id);
+        verifyNoInteractions(userExpected, userValidationService);
 
-        UserEntity userExpect = userService.findById(1l);
-
-        assertNotNull(userExpect);
-
-        verify(userRepository, Mockito.times(1)).getOne(1l);
-        assertEquals(userExpect, userActual);
-        verifyNoMoreInteractions(userRepository);
+        // UserSearchService переделать.
     }
 
 
@@ -86,7 +87,7 @@ class UserServiceTest {
         //THEN
         assertNotNull(result);
         assertEquals(2, list.size());
-        assertEquals(userService.findAll(),list);
+        assertEquals(userService.findAll(), list);
         verify(userRepository, Mockito.times(2)).findAll();
     }
 
@@ -106,14 +107,11 @@ class UserServiceTest {
         when(userRepository.save(userEntity)).thenReturn(userEntity);
 
         //THEN
-        assertEquals(userService.createUser(userEntity),userEntity);
+        assertEquals(userService.createUser(userEntity), userEntity);
         assertNotNull(userEntity);
         verify(userRepository, Mockito.times(1)).save(userEntity);
         verifyNoMoreInteractions(userRepository);
     }
-
-
-
 
 
     @Test
@@ -123,16 +121,14 @@ class UserServiceTest {
 
     @Test
     void updateUser() {
-        UserUpdateReq userUpdateReq = Mockito.mock(UserUpdateReq .class);
+        UserUpdateReq userUpdateReq = Mockito.mock(UserUpdateReq.class);
         UserEntity userEntity = Mockito.mock(UserEntity.class);
-
         LocalDate birthday = LocalDate.of(1914, 7, 28);
         userUpdateReq.setId(1L);
         userUpdateReq.setFirstName("Kirill");
         userUpdateReq.setLastName("Medvedev");
         userUpdateReq.setEmail("Kirill@tut.by");
         userUpdateReq.setBirthday(birthday);
-
 
         when(userService.findById(1L)).thenReturn(userEntity);
         when(userService.updateUser(userUpdateReq)).thenReturn(userEntity);

@@ -20,7 +20,7 @@ public class UserService {
     }
 
 
-    public UserEntity findById(Long id) {
+    public UserEntity findById(Long id) { // UserSearchService
         return userRepository.getOne(id);
     }
 
@@ -50,6 +50,6 @@ public class UserService {
         user.setEmail(updateReq.getEmail());
         userRepository.save(user);
         return user;
-    }
+    }// UserSearchService
 }
 
