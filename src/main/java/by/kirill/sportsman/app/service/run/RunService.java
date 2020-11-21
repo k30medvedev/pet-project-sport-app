@@ -4,47 +4,43 @@ import by.kirill.sportsman.app.model.RunEntity;
 import by.kirill.sportsman.app.repository.RunRepository;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
 public class RunService {
 
     private final RunRepository runRepository;
-    private final RunValidationService runValidationService;
-
-    public RunService(RunRepository runRepository, RunValidationService runValidationService) {
-
+    private final RunSearchService runSearchService;
+    private final RunUpdateRun runUpdateRun;
+    private final RunCreateRunService runCreateRunService;
+    public RunService(RunRepository runRepository,
+                      RunSearchService runSearchService,
+                      RunUpdateRun runUpdateRun,
+                      RunCreateRunService runCreateRunService
+                      )
+    {
         this.runRepository = runRepository;
-        this.runValidationService = runValidationService;
+        this.runSearchService = runSearchService;
+        this.runUpdateRun = runUpdateRun;
+        this.runCreateRunService = runCreateRunService;
+
     }
 
-    public RunEntity findById(Long id) {
-        return runRepository.getOne(id);
-    }
+    public RunEntity findById(Long id) { return runSearchService.findById(id); }
 
     public List<RunEntity> findAllRuns() {
-        return runRepository.findAll();
+        return runSearchService.findAllRuns();
     }
 
-    public RunEntity createRun(RunEntity run) throws StarGreatThanFinisException,DistanceNotZeroException {
-        runValidationService.validateRun(run);
-        run.setId(null);
-        return runRepository.save(run);
+    public RunEntity createRun(RunEntity run) throws StarGreatThanFinisException, DistanceNotZeroException {
+        return runCreateRunService.createRun(run);
     }
 
-    public void deleteById(Long id) {
-        runRepository.deleteById(id);
+    public void deleteById(Long id) { runRepository.deleteById(id);
     }
 
-    public RunEntity updateRun(Long id,RunEntity runEntity) {
-        RunEntity run = findById(id);
-        runValidationService.validateRun(run,runEntity);
-        run.setStartRun(runEntity.getStartRun());
-        run.setFinishRun(runEntity.getFinishRun());
-        run.setDistance(runEntity.getDistance());
-        run.setAverage(runEntity.getAverage());
-        run.setSportsmanId(runEntity.getSportsmanId());
-        return runRepository.save(run);
+    public RunEntity updateRun(Long id, RunEntity runEntity) {
+
+        return runUpdateRun.updateRun(id,runEntity);
     }
 }

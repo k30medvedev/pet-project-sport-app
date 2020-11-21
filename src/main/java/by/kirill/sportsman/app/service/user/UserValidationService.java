@@ -30,6 +30,6 @@ public class UserValidationService {
 
     void validateUserUpdateReq(@NotNull UserEntity existingUser, @Valid UserUpdateReq userUpdateReq) {
 
-     }
+    }
 
 }

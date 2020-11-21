@@ -24,12 +24,10 @@ class UserUpdateService {
     UserEntity updateUser(UserUpdateReq updateReq) {
         UserEntity user = userSearchService.findById(updateReq.getId());
         userValidationService.validateUserUpdateReq(user, updateReq);
-        UserEntity result = userRepository.save(user);
         user.setFirstName(updateReq.getFirstName());
         user.setLastName(updateReq.getLastName());
         user.setBirthday(updateReq.getBirthday());
         user.setEmail(updateReq.getEmail());
-        //return userRepository.save(user);
-        return result;
+        return userRepository.save(user);
     }
 }

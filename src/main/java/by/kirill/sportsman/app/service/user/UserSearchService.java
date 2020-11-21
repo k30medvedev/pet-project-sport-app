@@ -16,12 +16,12 @@ class UserSearchService {
         this.userRepository = userRepository;
     }
 
-    UserEntity findById(Long id) {
-        return userRepository.getOne(id);
-    }
-
     List<UserEntity> findAll() {
         return userRepository.findAll();
+    }
+
+    UserEntity findById(Long id) {
+        return userRepository.getOne(id);
     }
 
 }

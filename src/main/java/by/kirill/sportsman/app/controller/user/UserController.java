@@ -14,7 +14,10 @@ class UserController {
     private final UserDtoConverter userDtoConverter;
     private final ModelMapper modelMapper;
 
-    public UserController(UserService userService, UserDtoConverter userDtoConverter, ModelMapper modelMapper) {
+    public UserController(
+            UserService userService,
+            UserDtoConverter userDtoConverter,
+            ModelMapper modelMapper) {
         this.userService = userService;
         this.userDtoConverter = userDtoConverter;
         this.modelMapper = modelMapper;
@@ -26,7 +29,6 @@ class UserController {
     UserListDto getAll() {
         return userDtoConverter.getUserListDto();
     }
-
 
     @GetMapping("/sportsmans/{id}")
     @ResponseBody

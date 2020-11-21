@@ -19,3 +19,12 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  myapp:
+    image: sportmans-app:1.0.4
+    ports:
+      - 8050:8090
+#    volumes:
+#      - ./src/main/resources/application-docker.properties:/configuration/application-docker.properties
+    environment:
+      SPRING_PROFILES_ACTIVE: docker

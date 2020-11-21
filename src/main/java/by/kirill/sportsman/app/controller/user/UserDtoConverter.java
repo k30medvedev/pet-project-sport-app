@@ -16,7 +16,9 @@ public class UserDtoConverter {
     private UserService userService;
     private final ModelMapper modelMapper;
 
-    public UserDtoConverter(UserService userService, ModelMapper modelMapper) {
+    public UserDtoConverter(
+            UserService userService,
+            ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }

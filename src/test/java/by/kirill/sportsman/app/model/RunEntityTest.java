@@ -1,5 +1,6 @@
 package by.kirill.sportsman.app.model;
 
+import by.kirill.sportsman.app.service.run.KeepData;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -13,17 +14,11 @@ class RunEntityTest {
     @Test
     void calculateAverageTest() {
         RunEntity runEntity = new RunEntity();
-        Double distance = 20.5;
         Double expectedDistance = 175.609756097561;
-        ZoneId zone = ZoneId.of("+03:00");
-        OffsetDateTime startRun = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
-        OffsetDateTime finishRin = OffsetDateTime.of(2020, 5, 20, 10, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
-        runEntity.setStartRun(startRun);
-        runEntity.setFinishRun(finishRin);
-        runEntity.setDistance(distance);
 
+        runEntity.setStartRun(KeepData.START_RUN);
+        runEntity.setFinishRun(KeepData.FINISH_RUN);
+        runEntity.setDistance(KeepData.DISTANCE);
         runEntity.setAverage(runEntity.calculateAverage());
 
         assertEquals(expectedDistance, runEntity.getAverage());
@@ -33,44 +28,36 @@ class RunEntityTest {
 
     @Test
     void setStartRunTest() {
-        ZoneId zone = ZoneId.of("+03:00");
-        OffsetDateTime dateTime = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
+        OffsetDateTime actualDateTime = KeepData.START_RUN;
         RunEntity runEntity = new RunEntity();
-        runEntity.setStartRun(dateTime);
-        assertEquals(runEntity.getStartRun(), dateTime);
+        runEntity.setStartRun(actualDateTime);
+        assertEquals(runEntity.getStartRun(), actualDateTime);
     }
 
     @Test
     void getStartRunTest() {
-        ZoneId zone = ZoneId.of("+03:00");
-        OffsetDateTime dateTime = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
+        OffsetDateTime dateTime =KeepData.START_RUN;
         RunEntity runEntity = new RunEntity();
         runEntity.setStartRun(dateTime);
-        OffsetDateTime result = runEntity.getStartRun();
-        assertEquals(result, dateTime);
+        OffsetDateTime expectedDateTime = runEntity.getStartRun();
+        assertEquals(expectedDateTime, dateTime);
 
     }
 
     @Test
     void setFinishRunTest() {
-        ZoneId zone = ZoneId.of("+03:00");
-        OffsetDateTime dateTime = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
+        OffsetDateTime actualDateTime = KeepData.FINISH_RUN;
         RunEntity runEntity = new RunEntity();
-        runEntity.setFinishRun(dateTime);
-        assertEquals(runEntity.getFinishRun(), dateTime);
+        runEntity.setFinishRun(actualDateTime);
+        assertEquals(runEntity.getFinishRun(), actualDateTime);
     }
 
     @Test
     void getFinishRunTest() {
-        ZoneId zone = ZoneId.of("+03:00");
-        OffsetDateTime dateTime = OffsetDateTime.of(2020, 5, 20, 9, 10, 40,
-                50000, ZoneOffset.of(String.valueOf(zone)));
+        OffsetDateTime actualDateTime = KeepData.FINISH_RUN;
         RunEntity runEntity = new RunEntity();
-        runEntity.setFinishRun(dateTime);
-        OffsetDateTime result = runEntity.getFinishRun();
-        assertEquals(result, dateTime);
+        runEntity.setFinishRun(actualDateTime);
+        OffsetDateTime expectedDateTime = runEntity.getFinishRun();
+        assertEquals(expectedDateTime, actualDateTime);
     }
 }
