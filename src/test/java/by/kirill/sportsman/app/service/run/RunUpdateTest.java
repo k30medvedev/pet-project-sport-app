@@ -12,51 +12,61 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class RunUpdateTest {
-
 
     private RunValidationService runValidationService;
     private RunRepository runRepository;
     private RunSearchService runSearchService;
-    private RunUpdateRun runUpdateRun;
+    private RunUpdateService runUpdateService;
+
 
     @BeforeEach
     void setUp() {
         runValidationService = mock(RunValidationService.class);
         runRepository = mock(RunRepository.class);
-        runUpdateRun = new RunUpdateRun(runSearchService,runValidationService,runRepository);
+        runSearchService = mock(RunSearchService.class);
+        runUpdateService = new RunUpdateService(runValidationService, runRepository, runSearchService);
     }
 
     @Test
     void updateRun() {
-//
-//        //GIVEN
-//        final Long id = 227L;
-//        final RunEntity expectedSearchResult = mock(RunEntity.class);
-//        final RunEntity expectedUpdateResult = mock(RunEntity.class);
-//        final RunEntity runRequest = mock(RunEntity.class);
-//
-//        when(runRequest.getId()).thenReturn(id);
-//        when(runRequest.getStartRun()).thenReturn(KeepData.START_RUN);
-//        when(runRequest.getFinishRun()).thenReturn(KeepData.FINISH_RUN);
-//        when(runRequest.getDistance()).thenReturn(KeepData.DISTANCE);
-//        when(runRequest.getAverage()).thenReturn(12.0);
-//
-//        when(runSearchService.findById(id)).thenReturn(expectedSearchResult);
-//
-//        when(runRepository.save(expectedSearchResult)).thenReturn(expectedUpdateResult);
-//
-//        //WHEN
-//        RunEntity actualResult = runUpdateRun.updateRun(id,runRequest);
-//
-//        //THEN
-//        assertEquals(expectedUpdateResult,actualResult);
 
+        //GIVEN
+        RunEntity runRequest = mock(RunEntity.class);
+        RunEntity expectedSearchResult = mock(RunEntity.class);
+        RunEntity expectedUpdateResult = mock(RunEntity.class);
 
+        when(runRequest.getStartRun()).thenReturn(RunConstants.START_RUN);
+        when(runRequest.getFinishRun()).thenReturn(RunConstants.FINISH_RUN);
+        when(runRequest.getDistance()).thenReturn(RunConstants.DISTANCE);
+        when(runRequest.getAverage()).thenReturn(RunConstants.AVERAGE);
+        when(runRequest.getSportsmanId()).thenReturn(12L);
+
+        when(runSearchService.findById(RunConstants.ID)).thenReturn(expectedSearchResult);
+
+        when(runRepository.save(expectedSearchResult)).thenReturn(expectedUpdateResult);
+
+        //WHEN
+        RunEntity actualResult = runUpdateService.updateRun(RunConstants.ID, runRequest);
+
+        //THEN
+        assertEquals(expectedUpdateResult, actualResult);
+        verify(runRequest, times(1)).getStartRun();
+        verify(runRequest, times(1)).getFinishRun();
+        verify(runRequest, times(1)).getDistance();
+        verify(runRequest, times(1)).getAverage();
+
+        verify(runSearchService, only()).findById(RunConstants.ID);
+        verify(runRepository, only()).save(expectedSearchResult);
+        verifyNoMoreInteractions(expectedUpdateResult);
+
+        verify(expectedSearchResult, times(1)).setStartRun(RunConstants.START_RUN);
+        verify(expectedSearchResult, times(1)).setFinishRun(RunConstants.FINISH_RUN);
+        verify(expectedSearchResult, times(1)).setDistance(RunConstants.DISTANCE);
+        verify(expectedSearchResult, times(1)).setAverage(RunConstants.AVERAGE);
+        verify(expectedSearchResult, times(1)).setSportsmanId(12L);
+        verifyNoMoreInteractions(expectedSearchResult);
     }
-
-     //Закочнить.
 }

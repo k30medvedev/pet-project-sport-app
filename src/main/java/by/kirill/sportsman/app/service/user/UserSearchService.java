@@ -2,7 +2,6 @@ package by.kirill.sportsman.app.service.user;
 
 import by.kirill.sportsman.app.model.UserEntity;
 import by.kirill.sportsman.app.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -11,22 +11,24 @@ public class RunService {
 
     private final RunRepository runRepository;
     private final RunSearchService runSearchService;
-    private final RunUpdateRun runUpdateRun;
+    private final RunUpdateService runUpdateService;
     private final RunCreateRunService runCreateRunService;
+
     public RunService(RunRepository runRepository,
                       RunSearchService runSearchService,
-                      RunUpdateRun runUpdateRun,
+                      RunUpdateService runUpdateService,
                       RunCreateRunService runCreateRunService
-                      )
-    {
+    ) {
         this.runRepository = runRepository;
         this.runSearchService = runSearchService;
-        this.runUpdateRun = runUpdateRun;
+        this.runUpdateService = runUpdateService;
         this.runCreateRunService = runCreateRunService;
 
     }
 
-    public RunEntity findById(Long id) { return runSearchService.findById(id); }
+    public RunEntity findById(Long id) {
+        return runSearchService.findById(id);
+    }
 
     public List<RunEntity> findAllRuns() {
         return runSearchService.findAllRuns();
@@ -36,11 +38,12 @@ public class RunService {
         return runCreateRunService.createRun(run);
     }
 
-    public void deleteById(Long id) { runRepository.deleteById(id);
+    public void deleteById(Long id) {
+        runRepository.deleteById(id);
     }
 
     public RunEntity updateRun(Long id, RunEntity runEntity) {
 
-        return runUpdateRun.updateRun(id,runEntity);
+        return runUpdateService.updateRun(id, runEntity);
     }
 }

@@ -19,15 +19,14 @@ public class RunUpdateService {
         this.runSearchService = runSearchService;
     }
 
-
-    public RunEntity updateRun(Long id, RunEntity runEntity) {
+    public RunEntity updateRun(Long id, RunEntity runRequest) {
         RunEntity run = runSearchService.findById(id);
-        runValidationService.validateRun(run, runEntity);
-        run.setStartRun(runEntity.getStartRun());
-        run.setFinishRun(runEntity.getFinishRun());
-        run.setDistance(runEntity.getDistance());
-        run.setAverage(runEntity.getAverage());
-        run.setSportsmanId(runEntity.getSportsmanId());
+        runValidationService.validateRun(run, runRequest);
+        run.setStartRun(runRequest.getStartRun());
+        run.setFinishRun(runRequest.getFinishRun());
+        run.setDistance(runRequest.getDistance());
+        run.setAverage(runRequest.getAverage());
+        run.setSportsmanId(runRequest.getSportsmanId());
         return runRepository.save(run);
     }
 }

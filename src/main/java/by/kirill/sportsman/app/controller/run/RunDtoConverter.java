@@ -1,16 +1,12 @@
 package by.kirill.sportsman.app.controller.run;
 
 import by.kirill.sportsman.app.model.RunEntity;
-import by.kirill.sportsman.app.service.run.RunService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class RunDtoConverter {
 
-    RunService runService;
-    ModelMapper modelMapper;
 
     public RunEntity convertDtoToModel(RunCreationDto dto) {
         RunEntity runEntity = new RunEntity();

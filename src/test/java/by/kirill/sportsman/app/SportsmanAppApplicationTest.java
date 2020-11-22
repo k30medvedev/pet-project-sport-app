@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //@SpringBootTest
 class SportsmanAppApplicationTest {
 
-    @Disabled
+
     @Test
     void contextLoads() {
     }

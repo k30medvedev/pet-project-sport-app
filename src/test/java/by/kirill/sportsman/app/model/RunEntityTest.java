@@ -1,11 +1,9 @@
 package by.kirill.sportsman.app.model;
 
-import by.kirill.sportsman.app.service.run.KeepData;
+import by.kirill.sportsman.app.service.run.RunConstants;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,9 +14,9 @@ class RunEntityTest {
         RunEntity runEntity = new RunEntity();
         Double expectedDistance = 175.609756097561;
 
-        runEntity.setStartRun(KeepData.START_RUN);
-        runEntity.setFinishRun(KeepData.FINISH_RUN);
-        runEntity.setDistance(KeepData.DISTANCE);
+        runEntity.setStartRun(RunConstants.START_RUN);
+        runEntity.setFinishRun(RunConstants.FINISH_RUN);
+        runEntity.setDistance(RunConstants.DISTANCE);
         runEntity.setAverage(runEntity.calculateAverage());
 
         assertEquals(expectedDistance, runEntity.getAverage());
@@ -28,7 +26,7 @@ class RunEntityTest {
 
     @Test
     void setStartRunTest() {
-        OffsetDateTime actualDateTime = KeepData.START_RUN;
+        OffsetDateTime actualDateTime = RunConstants.START_RUN;
         RunEntity runEntity = new RunEntity();
         runEntity.setStartRun(actualDateTime);
         assertEquals(runEntity.getStartRun(), actualDateTime);
@@ -36,7 +34,7 @@ class RunEntityTest {
 
     @Test
     void getStartRunTest() {
-        OffsetDateTime dateTime =KeepData.START_RUN;
+        OffsetDateTime dateTime = RunConstants.START_RUN;
         RunEntity runEntity = new RunEntity();
         runEntity.setStartRun(dateTime);
         OffsetDateTime expectedDateTime = runEntity.getStartRun();
@@ -46,7 +44,7 @@ class RunEntityTest {
 
     @Test
     void setFinishRunTest() {
-        OffsetDateTime actualDateTime = KeepData.FINISH_RUN;
+        OffsetDateTime actualDateTime = RunConstants.FINISH_RUN;
         RunEntity runEntity = new RunEntity();
         runEntity.setFinishRun(actualDateTime);
         assertEquals(runEntity.getFinishRun(), actualDateTime);
@@ -54,7 +52,7 @@ class RunEntityTest {
 
     @Test
     void getFinishRunTest() {
-        OffsetDateTime actualDateTime = KeepData.FINISH_RUN;
+        OffsetDateTime actualDateTime = RunConstants.FINISH_RUN;
         RunEntity runEntity = new RunEntity();
         runEntity.setFinishRun(actualDateTime);
         OffsetDateTime expectedDateTime = runEntity.getFinishRun();

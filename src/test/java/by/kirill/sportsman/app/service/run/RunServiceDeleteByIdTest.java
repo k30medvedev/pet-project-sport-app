@@ -12,7 +12,7 @@ class RunServiceDeleteByIdTest {
 
     private RunRepository runRepository;
     private RunSearchService runSearchService;
-    private RunUpdateRun runUpdateRun;
+    private RunUpdateService runUpdateService;
     private RunCreateRunService runCreateRunService;
     private RunService runService;
 
@@ -21,9 +21,9 @@ class RunServiceDeleteByIdTest {
     void setUp() {
         runRepository = Mockito.mock(RunRepository.class);
         runSearchService = Mockito.mock(RunSearchService.class);
-        runUpdateRun = Mockito.mock(RunUpdateRun.class);
+        runUpdateService = Mockito.mock(RunUpdateService.class);
         runCreateRunService = Mockito.mock(RunCreateRunService.class);
-        runService = new RunService(runRepository,runSearchService,runUpdateRun,runCreateRunService);
+        runService = new RunService(runRepository,runSearchService,runUpdateService,runCreateRunService);
     }
 
     @Test

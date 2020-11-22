@@ -30,6 +30,7 @@ class UserUpdateTest {
 
     @Test
     void shouldUpdateUserName() {
+
         //GIVEN
         final LocalDate birthday = LocalDate.of(1914, 7, 28);
         final UserUpdateReq updateReq = Mockito.mock(UserUpdateReq.class);
@@ -46,6 +47,7 @@ class UserUpdateTest {
         when(userSearchService.findById(id)).thenReturn(expectedSearchResult);
 
         when(userRepository.save(expectedSearchResult)).thenReturn(expectedUpdateResult);
+
         //WHEN
         UserEntity actualResult = userUpdateService.updateUser(updateReq);
 
