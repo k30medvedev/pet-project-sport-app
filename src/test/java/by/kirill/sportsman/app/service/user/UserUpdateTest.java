@@ -1,8 +1,9 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
 import by.kirill.sportsman.app.repository.UserRepository;
 import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.validation.UserValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,8 +35,8 @@ class UserUpdateTest {
         //GIVEN
         final LocalDate birthday = LocalDate.of(1914, 7, 28);
         final UserUpdateReq updateReq = Mockito.mock(UserUpdateReq.class);
-        final UserEntity expectedSearchResult = Mockito.mock(UserEntity.class);
-        final UserEntity expectedUpdateResult = Mockito.mock(UserEntity.class);
+        final User expectedSearchResult = Mockito.mock(User.class);
+        final User expectedUpdateResult = Mockito.mock(User.class);
 
         long id = 227L;
         when(updateReq.getId()).thenReturn(id);
@@ -49,7 +50,7 @@ class UserUpdateTest {
         when(userRepository.save(expectedSearchResult)).thenReturn(expectedUpdateResult);
 
         //WHEN
-        UserEntity actualResult = userUpdateService.updateUser(updateReq);
+        User actualResult = userUpdateService.updateUser(updateReq);
 
         //THEN
         assertEquals(expectedUpdateResult, actualResult);

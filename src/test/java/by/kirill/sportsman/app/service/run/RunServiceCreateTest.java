@@ -1,19 +1,21 @@
 package by.kirill.sportsman.app.service.run;
 
-import by.kirill.sportsman.app.model.RunEntity;
+import by.kirill.sportsman.app.domain.Run;
+import by.kirill.sportsman.app.exception.DistanceNotZeroException;
+import by.kirill.sportsman.app.exception.StarGreatThanFinisException;
 import by.kirill.sportsman.app.repository.RunRepository;
+import by.kirill.sportsman.app.validation.RunValidationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Mockito.mock;
 
 
 class RunServiceCreateTest {
 
-    private  RunValidationService runValidationService;
+    private RunValidationService runValidationService;
     private  RunRepository runRepository;
     private RunCreateRunService runCreateRunService;
 
@@ -28,7 +30,7 @@ class RunServiceCreateTest {
     @Test
     void shouldThrowExceptionIfValidationFails() {
         // GIVEN
-        RunEntity runEntity = mock(RunEntity.class);
+        Run runEntity = mock(Run.class);
         Mockito.doThrow(StarGreatThanFinisException.class).when(runValidationService).validateRun(runEntity);
 
         // WHEN
@@ -46,7 +48,7 @@ class RunServiceCreateTest {
     @Test
     void shouldThrowDistanceNotZeroException() {
         // GIVEN
-        RunEntity runEntity = mock(RunEntity.class);
+        Run runEntity = mock(Run.class);
         Mockito.doThrow(DistanceNotZeroException.class).when(runValidationService).validateRun(runEntity);
 
         // WHEN

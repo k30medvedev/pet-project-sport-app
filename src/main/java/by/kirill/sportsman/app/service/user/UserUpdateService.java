@@ -1,28 +1,22 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
 import by.kirill.sportsman.app.repository.UserRepository;
 import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
+import by.kirill.sportsman.app.validation.UserValidationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 class UserUpdateService {
 
     private final UserValidationService userValidationService;
     private final UserRepository userRepository;
     private final UserSearchService userSearchService;
 
-    UserUpdateService(
-            UserValidationService userValidationService,
-            UserRepository userRepository,
-            UserSearchService userSearchService) {
-        this.userValidationService = userValidationService;
-        this.userRepository = userRepository;
-        this.userSearchService = userSearchService;
-    }
-
-    UserEntity updateUser(UserUpdateReq updateReq) {
-        UserEntity user = userSearchService.findById(updateReq.getId());
+    User updateUser(UserUpdateReq updateReq) {
+        User user = userSearchService.findById(updateReq.getId());
         userValidationService.validateUserUpdateReq(user, updateReq);
         user.setFirstName(updateReq.getFirstName());
         user.setLastName(updateReq.getLastName());

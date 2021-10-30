@@ -1,14 +1,12 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
 import by.kirill.sportsman.app.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoInteractions;
 
 class UserFindByIdTest {
 
@@ -26,14 +24,14 @@ class UserFindByIdTest {
     void shouldFindById() {
         //GIVEN
         final long id = 117L;
-        UserEntity actualUserEntity = mock(UserEntity.class);
+        User actualUser = mock(User.class);
 
         //WHEN
-        when(userRepository.getOne(id)).thenReturn(actualUserEntity);
-        UserEntity expectedUserEntity = userSearchService.findById(id);
+        when(userRepository.getOne(id)).thenReturn(actualUser);
+        User expectedUser = userSearchService.findById(id);
 
         //THEN
         verify(userRepository, only()).getOne(id);
-        assertEquals(expectedUserEntity,actualUserEntity);
+        assertEquals(expectedUser, actualUser);
     }
 }

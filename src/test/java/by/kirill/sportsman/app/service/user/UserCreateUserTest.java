@@ -1,7 +1,9 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
+import by.kirill.sportsman.app.exception.EmailAlreadyInUseException;
 import by.kirill.sportsman.app.repository.UserRepository;
+import by.kirill.sportsman.app.validation.UserValidationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,21 +29,21 @@ class UserCreateUserTest {
     @Test
     void createNewUserTest() {
         //GIVEN
-        UserEntity userEntity = mock(UserEntity.class);
+        User user = mock(User.class);
         LocalDate birthday = LocalDate.of(1914, 7, 28);
-        userEntity.setId(1L);
-        userEntity.setFirstName("Kirill");
-        userEntity.setLastName("Medvedev");
-        userEntity.setEmail("Kirill@tut.by");
-        userEntity.setBirthday(birthday);
+        user.setId(1L);
+        user.setFirstName("Kirill");
+        user.setLastName("Medvedev");
+        user.setEmail("Kirill@tut.by");
+        user.setBirthday(birthday);
 
         //WHEN
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
+        when(userRepository.save(user)).thenReturn(user);
 
         //THEN
-        assertEquals(userCreateService.createUser(userEntity), userEntity);
-        assertNotNull(userEntity);
-        verify(userRepository, times(1)).save(userEntity);
+        assertEquals(userCreateService.createUser(user), user);
+        assertNotNull(user);
+        verify(userRepository, times(1)).save(user);
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -49,18 +51,18 @@ class UserCreateUserTest {
     @Test
     void createUserEmailAlreadyInUseException() {
         //GIVEN
-        UserEntity userEntity = Mockito.mock(UserEntity.class);
-        doThrow(EmailAlreadyInUseException.class).when(userValidationService).validateUserCreationReq(userEntity);
+        User user = Mockito.mock(User.class);
+        doThrow(EmailAlreadyInUseException.class).when(userValidationService).validateUserCreationReq(user);
 
         //WHEN
         Assertions.assertThrows(
                 EmailAlreadyInUseException.class,
-                () -> userCreateService.createUser(userEntity)
+                () -> userCreateService.createUser(user)
         );
 
         //THEN
-        verifyNoInteractions(userEntity, userRepository);
-        verify(userValidationService).validateUserCreationReq(userEntity);
+        verifyNoInteractions(user, userRepository);
+        verify(userValidationService).validateUserCreationReq(user);
         verifyNoMoreInteractions(userValidationService);
     }
 

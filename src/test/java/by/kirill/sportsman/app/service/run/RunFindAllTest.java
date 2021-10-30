@@ -1,7 +1,6 @@
 package by.kirill.sportsman.app.service.run;
 
-import by.kirill.sportsman.app.model.RunEntity;
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.Run;
 import by.kirill.sportsman.app.repository.RunRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +26,10 @@ class RunFindAllTest {
     @Test
     void findAllRuns() {
         //GIVEN
-        List<RunEntity> listExpected = mock(List.class);
+        List<Run> listExpected = mock(List.class);
 
         when(runRepository.findAll()).thenReturn(listExpected);
-        List<RunEntity> listActual = runSearchService.findAllRuns();
+        List<Run> listActual = runSearchService.findAllRuns();
 
         //THEN
         verify(runRepository, only()).findAll();

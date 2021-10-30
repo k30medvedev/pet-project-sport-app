@@ -1,15 +1,10 @@
 package by.kirill.sportsman.app.service.run;
 
-import by.kirill.sportsman.app.model.RunEntity;
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.Run;
 import by.kirill.sportsman.app.repository.RunRepository;
+import by.kirill.sportsman.app.validation.RunValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,9 +29,9 @@ class RunUpdateTest {
     void updateRun() {
 
         //GIVEN
-        RunEntity runRequest = mock(RunEntity.class);
-        RunEntity expectedSearchResult = mock(RunEntity.class);
-        RunEntity expectedUpdateResult = mock(RunEntity.class);
+        Run runRequest = mock(Run.class);
+        Run expectedSearchResult = mock(Run.class);
+        Run expectedUpdateResult = mock(Run.class);
 
         when(runRequest.getStartRun()).thenReturn(RunConstants.START_RUN);
         when(runRequest.getFinishRun()).thenReturn(RunConstants.FINISH_RUN);
@@ -49,7 +44,7 @@ class RunUpdateTest {
         when(runRepository.save(expectedSearchResult)).thenReturn(expectedUpdateResult);
 
         //WHEN
-        RunEntity actualResult = runUpdateService.updateRun(RunConstants.ID, runRequest);
+        Run actualResult = runUpdateService.updateRun(RunConstants.ID, runRequest);
 
         //THEN
         assertEquals(expectedUpdateResult, actualResult);

@@ -1,12 +1,10 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
 import by.kirill.sportsman.app.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,11 +28,11 @@ public class UserFindAllTest {
     @Test
     void shouldFindAllTest() {
         //GIVEN
-        List<UserEntity> listExpected = mock(List.class);
+        List<User> listExpected = mock(List.class);
 
         //WHEN
         when(userRepository.findAll()).thenReturn(listExpected);
-        List<UserEntity> listActual = userSearchService.findAll();
+        List<User> listActual = userSearchService.findAll();
 
         //THEN
         verify(userRepository, only()).findAll();

@@ -1,25 +1,23 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
 import by.kirill.sportsman.app.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 class UserSearchService {
 
     private final UserRepository userRepository;
 
-    UserSearchService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    List<UserEntity> findAll() {
+    List<User> findAll() {
         return userRepository.findAll();
     }
 
-    UserEntity findById(Long id) {
+    User findById(Long id) {
         return userRepository.getOne(id);
     }
 

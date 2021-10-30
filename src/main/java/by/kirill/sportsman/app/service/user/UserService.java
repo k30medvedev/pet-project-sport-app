@@ -1,14 +1,17 @@
 package by.kirill.sportsman.app.service.user;
 
-import by.kirill.sportsman.app.model.UserEntity;
+import by.kirill.sportsman.app.domain.User;
+import by.kirill.sportsman.app.exception.EmailAlreadyInUseException;
 import by.kirill.sportsman.app.service.user.EmailNotInUse.UserUpdateReq;
 import by.kirill.sportsman.app.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
@@ -16,27 +19,15 @@ public class UserService {
     private final UserUpdateService userUpdateService;
     private final UserSearchService userSearchService;
 
-    public UserService(
-            UserRepository userRepository,
-            UserCreateService userCreateService,
-            UserUpdateService userUpdateService,
-            UserSearchService userSearchService) {
-        this.userRepository = userRepository;
-        this.userCreateService = userCreateService;
-        this.userUpdateService = userUpdateService;
-        this.userSearchService = userSearchService;
-    }
-
-
-    public UserEntity findById(Long id) {
+    public User findById(Long id) {
         return userSearchService.findById(id);
     }
 
-    public List<UserEntity> findAll() {
+    public List<User> findAll() {
         return userSearchService.findAll();
     }
 
-    public UserEntity createUser(UserEntity user) throws EmailAlreadyInUseException {
+    public User createUser(User user) throws EmailAlreadyInUseException {
         return userCreateService.createUser(user);
     }
 
@@ -45,7 +36,7 @@ public class UserService {
         userRepository.deleteByIdCascade(id);
     }
 
-    public UserEntity updateUser(UserUpdateReq updateReq) {
+    public User updateUser(UserUpdateReq updateReq) {
         return userUpdateService.updateUser(updateReq);
     }
 
