@@ -22,7 +22,7 @@ public class RunMapper {
         runEntity.setFinishRun(dto.getFinishRun());
         runEntity.setDistance(dto.getDistance());
         runEntity.setSportsmanId(dto.getSportsmanId());
-        runEntity.setAverage(NumberUtil.calculateAverage(runEntity.getStartRun(),runEntity.getFinishRun(),runEntity.getDistance()));
+        runEntity.setAverage(NumberUtil.calculateAverage(runEntity.getStartRun(), runEntity.getFinishRun(), runEntity.getDistance()));
         return runEntity;
     }
 
@@ -32,7 +32,7 @@ public class RunMapper {
         runEntity.setFinishRun(dto.getFinishRun());
         runEntity.setDistance(dto.getDistance());
         runEntity.setSportsmanId(dto.getSportsmanId());
-        runEntity.setAverage(NumberUtil.calculateAverage(runEntity.getStartRun(),runEntity.getFinishRun(),runEntity.getDistance()));
+        runEntity.setAverage(NumberUtil.calculateAverage(runEntity.getStartRun(), runEntity.getFinishRun(), runEntity.getDistance()));
         return runEntity;
     }
 
@@ -52,7 +52,7 @@ public class RunMapper {
         runUpdateDto.setFinishRun(run.getFinishRun());
         runUpdateDto.setDistance(run.getDistance());
         runUpdateDto.setSportsmanId(run.getSportsmanId());
-        runUpdateDto.setAverage(NumberUtil.calculateAverage(run.getStartRun(),run.getFinishRun(),run.getDistance()));
+        runUpdateDto.setAverage(NumberUtil.calculateAverage(run.getStartRun(), run.getFinishRun(), run.getDistance()));
     }
 
     public RunResponse map(Run source) {
@@ -65,7 +65,7 @@ public class RunMapper {
                 .finishRun(source.getFinishRun())
                 .distance(source.getDistance())
                 .average(source.getAverage())
-                .sportsmanId(source.getSportsmanId())
+                .sportsmanId(source.getId())
                 .build();
     }
 
@@ -78,13 +78,32 @@ public class RunMapper {
     }
 
     public Run mapTo(RunRequest request) {
-        if (request==null){return null;}
-
+        if (request == null) {
+            return null;
+        }
         return Run.builder()
                 .startRun(request.getStartRun())
                 .finishRun(request.getFinishRun())
                 .distance(request.getDistance())
-                .average(NumberUtil.calculateAverage(request.getStartRun(),request.getFinishRun(),request.getDistance()))
+                .average(NumberUtil.calculateAverage(request.getStartRun(), request.getFinishRun(), request.getDistance()))
+                .sportsmanId(request.getSportsmanId())
                 .build();
     }
+
+    public Run map(RunRequest request, Run run) {
+        return run.builder()
+                .id(run.getId())
+                .startRun(request.getStartRun())
+                .finishRun(request.getFinishRun())
+                .distance(request.getDistance())
+                .average(NumberUtil.calculateAverage(request.getStartRun(), request.getFinishRun(), request.getDistance()))
+                .build();
+    }
+
+
+//    private UserResponse map(User user){
+//        return UserResponse.builder()
+//                .
+//                .build();
+//    }
 }

@@ -1,63 +1,57 @@
-package by.kirill.sportsman.app.controller;
-
-import by.kirill.sportsman.app.domain.User;
-import by.kirill.sportsman.app.mapper.UserMapper;
-import by.kirill.sportsman.app.model.user.*;
-import by.kirill.sportsman.app.exception.EmailAlreadyInUseException;
-import by.kirill.sportsman.app.service.user.UserService;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.*;
-
-
-@RestController
-@RequiredArgsConstructor
-class UserController {
-    private final UserService userService;
-    private final UserMapper userMapper;
-    private final ModelMapper modelMapper;
-
-
-    @GetMapping("/sportsmans")
-    @ResponseBody
-    UserListDto getAll() {
-        return userMapper.getUserListDto();
-    }
-
-    @GetMapping("/sportsmans/{id}")
-    @ResponseBody
-    UserDto findUser(@PathVariable Long id) {
-        User user = userService.findById(id);
-        UserDto dto = new UserDto();
-        userMapper.convertDtoToUser(user, dto);
-        return dto;
-    }
-
-    @PostMapping("/sportsmans")
-    UserDto createUser(@RequestBody UserCreationDto dto) throws EmailAlreadyInUseException {
-        User user = userMapper.convertDtoToUser(dto);
-        user = userService.createUser(user);
-        return userMapper.convertUserToDto(user);
-    }
-
-//    @PutMapping("/sportsmans/{id}")
-//    UserDto updateUserById(@PathVariable Long id, @RequestBody UserUpdateDto dto) {
-//        UserUpdateReq req = userMapper.convertDtoToUser(id, dto);
-//        UserEntity userEntity = userService.updateUser(req);
-//        return userMapper.convertUserToDto(userEntity);
+//package by.kirill.sportsman.app.controller;
+//
+//import by.kirill.sportsman.app.model.user.UserCreationRequest;
+//import by.kirill.sportsman.app.model.user.UserResponse;
+//import by.kirill.sportsman.app.model.user.UserUpdateRequest;
+//import by.kirill.sportsman.app.service.user.UserService;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.*;
+//
+//import javax.validation.Valid;
+//import javax.validation.constraints.Max;
+//import javax.validation.constraints.Min;
+//import java.util.List;
+//
+//
+//@RestController
+//@RequiredArgsConstructor
+//@RequestMapping(path = "/api/v1/sportsmans")
+//class UserController {
+//    private final UserService userService;
+//
+//    @GetMapping
+//    ResponseEntity<List<UserResponse>> getAll() {
+//        return userService.findAll();
 //    }
-
-    @DeleteMapping("/sportsmans/{id}")
-    UserDeleteDto deleteUser(@PathVariable("id") Long id) {
-        UserDeleteDto dto = new UserDeleteDto();
-        userService.deleteById(id);
-        User user = userService.findById(id);
-        dto.setId(user.getId());
-        return dto;
-    }
-
-
-}
-
-
-
+//
+//    @GetMapping("/{id}")
+//    @ResponseBody
+//    ResponseEntity<UserResponse> findUser(@PathVariable @Valid @Min(1)
+//                                          @Max(Integer.MAX_VALUE) final Long id) {
+//
+//        return return ResponseEntity.ok(userService.findById(id));
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<UserResponse> createUser(@RequestBody final UserCreationRequest request) {
+//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+//    }
+//
+//    @PutMapping("/sportsmans/{id}")
+//    public ResponseEntity<UserResponse> updateUserById(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+//        return ResponseEntity.accepted().body(userService.updateUser(id, request));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<UserResponse> deleteUser(@PathVariable @Valid @Min(1)
+//                                                   @Max(Integer.MAX_VALUE) final Long id) {
+//        return ResponseEntity.accepted().body(userService.deleteById(id));
+//    }
+//
+//
+//}
+//
+//
+//

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class RunResponse {
 
     private Double distance;
 
-    private Double average ;
+    private Double average;
 
     private Long sportsmanId;
 }

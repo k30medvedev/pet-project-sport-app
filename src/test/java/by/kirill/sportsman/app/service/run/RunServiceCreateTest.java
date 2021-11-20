@@ -31,7 +31,7 @@ class RunServiceCreateTest {
     void shouldThrowExceptionIfValidationFails() {
         // GIVEN
         Run runEntity = mock(Run.class);
-        Mockito.doThrow(StarGreatThanFinisException.class).when(runValidationService).validateRun(runEntity);
+        Mockito.doThrow(StarGreatThanFinisException.class).when(runValidationService).validate(runEntity);
 
         // WHEN
         Assertions.assertThrows(
@@ -41,7 +41,7 @@ class RunServiceCreateTest {
         );
         // THEN
         Mockito.verifyNoInteractions(runEntity, runRepository);
-        Mockito.verify(runValidationService).validateRun(runEntity);
+        Mockito.verify(runValidationService).validate(runEntity);
         Mockito.verifyNoMoreInteractions(runValidationService);
     }
 
@@ -49,7 +49,7 @@ class RunServiceCreateTest {
     void shouldThrowDistanceNotZeroException() {
         // GIVEN
         Run runEntity = mock(Run.class);
-        Mockito.doThrow(DistanceNotZeroException.class).when(runValidationService).validateRun(runEntity);
+        Mockito.doThrow(DistanceNotZeroException.class).when(runValidationService).validate(runEntity);
 
         // WHEN
         Assertions.assertThrows(
@@ -59,7 +59,7 @@ class RunServiceCreateTest {
 
         // THEN
         Mockito.verifyNoInteractions(runEntity, runRepository);
-        Mockito.verify(runValidationService).validateRun(runEntity);
+        Mockito.verify(runValidationService).validate(runEntity);
         Mockito.verifyNoMoreInteractions(runValidationService);
     }
 

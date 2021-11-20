@@ -1,44 +1,42 @@
 package by.kirill.sportsman.app.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.AbstractAuditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @DynamicUpdate
+@DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "runs")
-public class Run {
+@EntityListeners({AuditingEntityListener.class})
+public class Run extends AuditEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "start_run")
     private OffsetDateTime startRun;
 
-    @NotNull
     @Column(name = "finish_run")
     private OffsetDateTime finishRun;
 
-    @NotNull
     @Column(name = "distance")
     private Double distance;
 
-    @NotNull
     @Column(name = "sportsman_id")
     private Long sportsmanId;
 
     @Column(name = "average")
     private Double average;
-
 }

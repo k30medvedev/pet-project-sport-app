@@ -15,7 +15,7 @@ public class RunCreateRunService {
     private final RunRepository runRepository;
 
     public Run createRun(Run run) throws StarGreatThanFinisException, DistanceNotZeroException {
-        runValidationService.validateRun(run);
+        runValidationService.validate(run);
         run.setId(null);
         return runRepository.save(run);
     }

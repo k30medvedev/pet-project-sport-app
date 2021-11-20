@@ -6,6 +6,7 @@ import by.kirill.sportsman.app.mapper.RunMapper;
 import by.kirill.sportsman.app.model.run.RunRequest;
 import by.kirill.sportsman.app.model.run.RunResponse;
 import by.kirill.sportsman.app.repository.RunRepository;
+import by.kirill.sportsman.app.validation.RunValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +17,27 @@ import java.util.List;
 public class RunService {
 
     private final RunRepository runRepository;
-    private final RunSearchService runSearchService;
-
-    private final RunUpdateService runUpdateService;
-    private final RunCreateRunService runCreateRunService;
-
     private final RunMapper mapper;
+
+    private final RunValidationService validator;
 
     public RunResponse createRun(final RunRequest request) {
         final Run run = mapper.mapTo(request);
         return mapper.map(runRepository.save(run));
     }
 
-    public RunResponse deleteById(Long id) {
-        Run run = findOneOrThrowException(id);
+    public RunResponse deleteById(final Long id) {
+        final Run run = findOneOrThrowException(id);
         runRepository.deleteById(id);
         return mapper.map(run);
     }
 
-    public Run updateRun(Long id, RunRequest request) {
+    public RunResponse updateRun(final Long id, final RunRequest request) {
+        validator.validate(request);
         final Run run = findOneOrThrowException(id);
 
-        return runUpdateService.updateRun(id, runEntity);
+        final Run exist = mapper.map(request, run);
+        return mapper.map(runRepository.save(exist));
     }
 
     public List<RunResponse> getAllRuns() {
