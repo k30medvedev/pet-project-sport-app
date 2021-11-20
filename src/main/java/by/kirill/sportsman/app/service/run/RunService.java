@@ -35,7 +35,6 @@ public class RunService {
     public RunResponse updateRun(final Long id, final RunRequest request) {
         validator.validate(request);
         final Run run = findOneOrThrowException(id);
-
         final Run exist = mapper.map(request, run);
         return mapper.map(runRepository.save(exist));
     }

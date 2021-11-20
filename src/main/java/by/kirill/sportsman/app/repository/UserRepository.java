@@ -9,12 +9,9 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
-    @Query(value = "DELETE FROM sportsmans WHERE id = ?1",nativeQuery=true)
-    void deleteByIdCascade(long id);
+    @Query(value = "DELETE FROM sportsmans WHERE id = ?1", nativeQuery = true)
+    User deleteByIdCascade(long id);
 
     boolean existsByEmailIgnoreCase(String email);
-
-    List<User> findAllByEmailIgnoreCase(String email);
-
 }
 
