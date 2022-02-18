@@ -14,11 +14,11 @@ services:
     - POSTGRES_USER=sportsmans_user
     - POSTGRES_DB=sportmans_db
      
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
 
 #  myapp:
 #    image: sportmans-app:1.0.4

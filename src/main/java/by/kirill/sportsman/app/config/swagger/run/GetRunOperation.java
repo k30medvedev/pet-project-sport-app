@@ -1,4 +1,4 @@
-package by.kirill.sportsman.app.config.swagger;
+package by.kirill.sportsman.app.config.swagger.run;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,5 +20,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @ApiResponse(responseCode = "400", description = "Bad request")
 @ApiResponse(responseCode = "404", description = "Run not found")
 @ApiResponse(responseCode = "500", description = "Remote server error")
-public @interface GetRunOperationOperation {
+public @interface GetRunOperation {
 }

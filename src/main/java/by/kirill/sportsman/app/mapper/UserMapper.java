@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserMapper {
 
-    public User map(User target, UserUpdateRequest src) {
+    public User map(final User target,final UserUpdateRequest src) {
         if (src.getFirstName() != null) {
             target.setFirstName(src.getFirstName());
         }
@@ -30,7 +30,7 @@ public class UserMapper {
         return target;
     }
 
-    public User map(UserCreationRequest request) {
+    public User map(final UserCreationRequest request) {
         return User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -40,7 +40,7 @@ public class UserMapper {
 
     }
 
-    public UserResponse map(User source) {
+    public UserResponse map(final User source) {
         return UserResponse.builder()
                 .id(source.getId())
                 .firstName(source.getFirstName())
@@ -50,7 +50,7 @@ public class UserMapper {
                 .build();
     }
 
-    public List<UserResponse> map(List<User> userList) {
+    public List<UserResponse> map(final List<User> userList) {
         return userList.stream().map(i -> new UserResponse(
                 i.getId(),
                 i.getFirstName(), i.getLastName(), i.getEmail(),

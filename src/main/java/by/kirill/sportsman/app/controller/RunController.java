@@ -1,7 +1,6 @@
 package by.kirill.sportsman.app.controller;
 
-import by.kirill.sportsman.app.config.swagger.*;
-import by.kirill.sportsman.app.domain.Run;
+import by.kirill.sportsman.app.config.swagger.run.*;
 import by.kirill.sportsman.app.model.run.RunRequest;
 import by.kirill.sportsman.app.model.run.RunResponse;
 import by.kirill.sportsman.app.service.run.RunService;
@@ -23,33 +22,33 @@ class RunController {
     private final RunService runService;
 
     @GetMapping
-    @GetRunsOperationOperation
+    @GetRunsOperation
     public ResponseEntity<List<RunResponse>> getAllRuns() {
         return ResponseEntity.ok(runService.getAllRuns());
     }
 
     @GetMapping("/{id}")
-    @GetRunOperationOperation
+    @GetRunOperation
     public ResponseEntity<RunResponse> getRun(@PathVariable @Valid @Min(1)
                                               @Max(Integer.MAX_VALUE) final Long id) {
         return ResponseEntity.ok(runService.getRun(id));
     }
 
     @PostMapping
-    @CreateRunOperationOperation
-    public ResponseEntity<RunResponse> createRun(@RequestBody final RunRequest request) {
+    @CreateRunOperation
+    public ResponseEntity<RunResponse> createRun(final RunRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(runService.createRun(request));
     }
 
     @PutMapping("/{id}")
-    @UpdateRunOperationOperation
+    @UpdateRunOperation
     public ResponseEntity<RunResponse> updateRun(@PathVariable @Valid @Min(1)
-                                                 @Max(Integer.MAX_VALUE) final Long id, @RequestBody final RunRequest request) {
+                                                 @Max(Integer.MAX_VALUE) final Long id,final RunRequest request) {
         return ResponseEntity.accepted().body(runService.updateRun(id, request));
     }
 
     @DeleteMapping("/{id}")
-    @DeleteRunOperationOperation
+    @DeleteRunOperation
     public ResponseEntity<RunResponse> deleteRun(@PathVariable @Valid @Min(1)
                                                  @Max(Integer.MAX_VALUE) final Long id) {
             return ResponseEntity.accepted().body(runService.deleteById(id));

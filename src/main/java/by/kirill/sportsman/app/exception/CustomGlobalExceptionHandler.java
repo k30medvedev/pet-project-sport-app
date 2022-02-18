@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex, WebRequest request) {
+    public ResponseEntity<CustomErrorResponse> customHandleNotFound(Exception ex) {
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());
         errors.setError(ex.getMessage());

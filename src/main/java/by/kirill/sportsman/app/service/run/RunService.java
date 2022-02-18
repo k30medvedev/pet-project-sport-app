@@ -22,20 +22,20 @@ public class RunService {
     private final RunValidationService validator;
 
     public RunResponse createRun(final RunRequest request) {
-        final Run run = mapper.mapTo(request);
+        final var run = mapper.mapTo(request);
         return mapper.map(runRepository.save(run));
     }
 
     public RunResponse deleteById(final Long id) {
-        final Run run = findOneOrThrowException(id);
+        final var run = findOneOrThrowException(id);
         runRepository.deleteById(id);
         return mapper.map(run);
     }
 
     public RunResponse updateRun(final Long id, final RunRequest request) {
         validator.validate(request);
-        final Run run = findOneOrThrowException(id);
-        final Run exist = mapper.map(request, run);
+        final var run = findOneOrThrowException(id);
+        final var exist = mapper.map(request, run);
         return mapper.map(runRepository.save(exist));
     }
 

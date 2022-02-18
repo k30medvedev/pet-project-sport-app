@@ -1,4 +1,4 @@
-package by.kirill.sportsman.app.config.swagger;
+package by.kirill.sportsman.app.config.swagger.run;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,11 +14,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Retention(RUNTIME)
 @Target(ElementType.METHOD)
-@Operation(summary = "Delete Run", description = "Delete on the given input id")
+@Operation(summary = "Create Run", description = "Creates run based on the given input")
 @ApiResponse(content = @Content(mediaType = "application/json"))
-@ApiResponse(responseCode = "204", description = "Run successfully deleted")
+@ApiResponse(responseCode = "201", description = "Run successfully returned")
 @ApiResponse(responseCode = "400", description = "Bad request")
 @ApiResponse(responseCode = "404", description = "Run not found")
 @ApiResponse(responseCode = "500", description = "Remote server error")
-public @interface DeleteRunOperationOperation {
+public @interface CreateRunOperation {
 }

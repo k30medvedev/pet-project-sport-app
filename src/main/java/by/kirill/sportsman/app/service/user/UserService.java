@@ -33,7 +33,7 @@ public class UserService {
 
     public UserResponse createUser(UserCreationRequest request) {
         validator.validateUserCreationReq(request);
-        User user = mapper.map(request);
+        var user = mapper.map(request);
         return mapper.map(userRepository.save(user));
     }
 
@@ -43,9 +43,9 @@ public class UserService {
     }
 
     public UserResponse updateUser(Long id, UserUpdateRequest request) {
-        User user = findOneOrThrowException(id);
+        var user = findOneOrThrowException(id);
         validator.validateUserUpdateReq(user, request);
-        User updated = mapper.map(user, request);
+        var updated = mapper.map(user, request);
         return mapper.map(userRepository.save(updated));
     }
 
