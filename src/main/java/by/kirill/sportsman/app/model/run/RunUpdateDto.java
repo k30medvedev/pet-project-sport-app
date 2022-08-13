@@ -1,11 +1,12 @@
 package by.kirill.sportsman.app.model.run;
 
+import java.time.OffsetDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.OffsetDateTime;
 @Data
 @Builder
 @NoArgsConstructor

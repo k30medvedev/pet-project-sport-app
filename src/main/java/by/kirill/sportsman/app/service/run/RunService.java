@@ -1,53 +1,20 @@
 package by.kirill.sportsman.app.service.run;
 
-import by.kirill.sportsman.app.domain.Run;
-import by.kirill.sportsman.app.exception.RunNotFoundException;
-import by.kirill.sportsman.app.mapper.RunMapper;
 import by.kirill.sportsman.app.model.run.RunRequest;
 import by.kirill.sportsman.app.model.run.RunResponse;
-import by.kirill.sportsman.app.repository.RunRepository;
-import by.kirill.sportsman.app.validation.RunValidationService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class RunService {
+public interface RunService {
 
-    private final RunRepository runRepository;
-    private final RunMapper mapper;
+    RunResponse createRun(final RunRequest request);
 
-    private final RunValidationService validator;
+    RunResponse deleteRunById(final Long id);
 
-    public RunResponse createRun(final RunRequest request) {
-        final var run = mapper.mapTo(request);
-        return mapper.map(runRepository.save(run));
-    }
+    RunResponse updateRun(final Long id, final RunRequest request);
 
-    public RunResponse deleteById(final Long id) {
-        final var run = findOneOrThrowException(id);
-        runRepository.deleteById(id);
-        return mapper.map(run);
-    }
+    List<RunResponse> findAllRuns();
 
-    public RunResponse updateRun(final Long id, final RunRequest request) {
-        validator.validate(request);
-        final var run = findOneOrThrowException(id);
-        final var exist = mapper.map(request, run);
-        return mapper.map(runRepository.save(exist));
-    }
+    RunResponse findRun(final Long id);
 
-    public List<RunResponse> getAllRuns() {
-        return mapper.map(runRepository.findAll());
-    }
-
-    public RunResponse getRun(final Long id) {
-        return mapper.map(findOneOrThrowException(id));
-    }
-
-    public Run findOneOrThrowException(final Long id) {
-        return runRepository.findById(id).orElseThrow(() -> new RunNotFoundException(id + "Not found"));
-    }
 }
