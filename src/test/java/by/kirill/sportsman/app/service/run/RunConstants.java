@@ -16,5 +16,6 @@ public class RunConstants {
     public static final Double DISTANCE = 20.5;
     public static final Long ID = 227L;
     public static final Double AVERAGE = 12.0;
- //test
+ //test 2
+
 }
